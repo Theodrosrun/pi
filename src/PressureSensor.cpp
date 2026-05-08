@@ -13,20 +13,19 @@
 //_______________________________________________________________________________________________
 
 #include "PressureSensor.h"
-#include "UnitConversions.h"
 
 #include <Arduino.h>
 
+#include "UnitConversions.h"
+
 namespace {
-
-const float C_ForcePerCount = 9.81f / 50000.0f;
-const float C_SyringeDiameterMeters = 0.010f;
-
 const uint32_t C_StartupDelay_ms = 1500u;
 const uint32_t C_UnloadDelay_ms = 2000u;
 const uint8_t C_OffsetSampleCount = 20;
 const uint8_t C_MeasurementSampleCount = 5;
 
+const float C_ForcePerCount = 0.00005331522f;
+const float C_SyringeDiameterMeters = 0.010f;
 }  // namespace
 
 PressureSensor::PressureSensor(uint8_t dataPin, uint8_t clockPin)
