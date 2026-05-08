@@ -19,21 +19,20 @@
 
 namespace {
 
-constexpr float kForcePerCount = 9.81f / 50000.0f;
-constexpr float kSyringeDiameterMeters = 0.010f;
-constexpr unsigned long kLoopDelayMs = 300;
+PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure sensor
 
-PressureSensor PressureSensor_(HX711_DATA_PIN,
-                               HX711_CLOCK_PIN,
-                               kForcePerCount,
-                               kSyringeDiameterMeters);
+constexpr unsigned long C_LoopDelay_ms = 300;  //!< Loop delay in milliseconds
 
 }  // namespace
+
+//_______________________________________________________________________________________________
 
 void setup() {
     Serial.begin(9600);
     PressureSensor_.Init();
 }
+
+//_______________________________________________________________________________________________
 
 void loop() {
     if (PressureSensor_.Update()) {
@@ -54,5 +53,5 @@ void loop() {
         Serial.println("HX711 not ready");
     }
 
-    delay(kLoopDelayMs);
+    delay(C_LoopDelay_ms);
 }

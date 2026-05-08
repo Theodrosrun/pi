@@ -18,6 +18,9 @@
 
 namespace {
 
+constexpr float C_ForcePerCount = 9.81f / 50000.0f;
+constexpr float C_SyringeDiameterMeters = 0.010f;
+
 constexpr unsigned long C_StartupDelay_ms = 1500;
 constexpr unsigned long C_UnloadDelay_ms = 2000;
 constexpr uint8_t C_OffsetSampleCount = 20;
@@ -26,14 +29,9 @@ constexpr float C_PascalsPerBar = 100000.0f;
 
 }  // namespace
 
-PressureSensor::PressureSensor(uint8_t dataPin,
-                               uint8_t clockPin,
-                               float forcePerCount,
-                               float syringeDiameterMeters)
+PressureSensor::PressureSensor(uint8_t dataPin, uint8_t clockPin)
     : DataPin_(dataPin),
       ClockPin_(clockPin),
-      ForcePerCount_(forcePerCount),
-      SyringeDiameterMeters_(syringeDiameterMeters),
       Offset_(0),
       Raw_(0),
       Relative_(0),
@@ -65,7 +63,7 @@ bool PressureSensor::Update() {
 
     Raw_ = Scale_.read_average(C_MeasurementSampleCount);
     Relative_ = Raw_ - Offset_;
-    Force_N_ = static_cast<float>(Relative_) * ForcePerCount_;
+    Force_N_ = static_cast<float>(Relative_) * C_ForcePerCount;
     Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / C_PascalsPerBar;
 
     return true;
@@ -98,6 +96,6 @@ float PressureSensor::GetPressure_bar() const {
 //_______________________________________________________________________________________________
 
 float PressureSensor::ComputeAreaSquareMeters() const {
-    const float radiusMeters = SyringeDiameterMeters_ * 0.5f;
+    const float radiusMeters = C_SyringeDiameterMeters * 0.5f;
     return PI * radiusMeters * radiusMeters;
 }

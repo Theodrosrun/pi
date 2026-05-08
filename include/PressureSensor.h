@@ -22,10 +22,8 @@
 class PressureSensor {
    public:
     //! \brief Constructor
-    PressureSensor(uint8_t dataPin,      //!< The data pin connected to the HX711
-                   uint8_t clockPin,     //!< The clock pin connected to the HX711
-                   float forcePerCount,  //!< The force per count calibration factor [N/count]
-                   float syringeDiameterMeters  //!< The diameter of the syringe in meters
+    PressureSensor(uint8_t dataPin,  //!< The data pin connected to the HX711
+                   uint8_t clockPin  //!< The clock pin connected to the HX711
     );
 
     //! \brief Initializes the sensor
@@ -56,16 +54,14 @@ class PressureSensor {
     //! \return The area of the syringe in square meters
     float ComputeAreaSquareMeters() const;
 
-    HX711 Scale_;                        //!< The HX711 load cell amplifier instance
-    const uint8_t DataPin_;              //!< The data pin connected to the HX711
-    const uint8_t ClockPin_;             //!< The clock pin connected to the HX711
-    const float ForcePerCount_;          //!< The force per count calibration factor [N/count]
-    const float SyringeDiameterMeters_;  //!< The diameter of the syringe in meters
-    long Offset_;                        //!< The offset value for the sensor
-    long Raw_;                           //!< The raw sensor reading
-    long Relative_;                      //!< The relative sensor reading (raw - offset)
-    float Force_N_;                      //!< The computed force in [N]
-    float Pressure_bar_;                 //!< The computed pressure in [bars]
+    HX711 Scale_;             //!< The HX711 load cell amplifier instance
+    const uint8_t DataPin_;   //!< The data pin connected to the HX711
+    const uint8_t ClockPin_;  //!< The clock pin connected to the HX711
+    long Offset_;             //!< The offset value for the sensor
+    long Raw_;                //!< The raw sensor reading
+    long Relative_;           //!< The relative sensor reading (raw - offset)
+    float Force_N_;           //!< The computed force in [N]
+    float Pressure_bar_;      //!< The computed pressure in [bars]
 };
 
 #endif  // PRESSURE_SENSOR_H
