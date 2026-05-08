@@ -1,43 +1,59 @@
+//_______________________________________________________________________________________________
+//
+// Copyright (C) 2026                      HES-SO Master                         CH-1004 Lausanne
+//_______________________________________________________________________________________________
+//
+// PROJECT  PI
+//_______________________________________________________________________________________________
+//
+//! \file    main.cpp
+//! \brief   Main entry point for application
+//!
+//! \author  Theodros Mulugeta
+//_______________________________________________________________________________________________
+
 #include <Arduino.h>
-#include <LiquidCrystal.h>
 
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+#include "PressureSensor.h"
 
-String getButtonName(int value) {
-    if (value < 50) return "RIGHT";
-    if (value < 200) return "UP";
-    if (value < 400) return "DOWN";
-    if (value < 650) return "LEFT";
-    if (value < 900) return "SELECT";
-    return "NONE";
-}
+namespace {
+
+constexpr uint8_t kHx711DataPin = 12;
+constexpr uint8_t kHx711ClockPin = 13;
+constexpr float kForcePerCount = 9.81f / 50000.0f;
+constexpr float kSyringeDiameterMeters = 0.010f;
+constexpr unsigned long kLoopDelayMs = 300;
+
+PressureSensor PressureSensor_(kHx711DataPin,
+                               kHx711ClockPin,
+                               kForcePerCount,
+                               kSyringeDiameterMeters);
+
+}  // namespace
 
 void setup() {
     Serial.begin(9600);
-
-    lcd.begin(16, 2);
-    delay(200);
-    lcd.clear();
-
-    lcd.setCursor(0, 0);
-    lcd.print("LCD Keypad");
-    lcd.setCursor(0, 1);
-    lcd.print("Ready");
+    PressureSensor_.init();
 }
 
 void loop() {
-    int value = analogRead(A0);
-    String button = getButtonName(value);
+    if (PressureSensor_.update()) {
+        Serial.print("Raw = ");
+        Serial.print(PressureSensor_.getRaw());
 
-    Serial.print("Button = ");
-    Serial.println(button);
+        Serial.print(" | Relative = ");
+        Serial.print(PressureSensor_.getRelative());
 
-    lcd.setCursor(0, 0);
-    lcd.print("Button:        ");
+        Serial.print(" | Force = ");
+        Serial.print(PressureSensor_.getForceNewtons(), 3);
+        Serial.print(" N");
 
-    lcd.setCursor(0, 1);
-    lcd.print(button);
-    lcd.print("          ");
+        Serial.print(" | Pressure = ");
+        Serial.print(PressureSensor_.getPressureBar(), 4);
+        Serial.println(" bar");
+    } else {
+        Serial.println("HX711 not ready");
+    }
 
-    delay(200);
+    delay(kLoopDelayMs);
 }
