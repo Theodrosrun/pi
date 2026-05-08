@@ -28,60 +28,60 @@ PressureSensor::PressureSensor(uint8_t dataPin,
                                uint8_t clockPin,
                                float forcePerCount,
                                float syringeDiameterMeters)
-    : dataPin_(dataPin),
-      clockPin_(clockPin),
-      forcePerCount_(forcePerCount),
-      syringeDiameterMeters_(syringeDiameterMeters),
-      offset_(0),
-      raw_(0),
-      relative_(0),
-      forceNewtons_(0.0f),
-      pressureBar_(0.0f) {}
+    : DataPin_(dataPin),
+      ClockPin_(clockPin),
+      ForcePerCount_(forcePerCount),
+      SyringeDiameterMeters_(syringeDiameterMeters),
+      Offset_(0),
+      Raw_(0),
+      Relative_(0),
+      ForceNewtons_(0.0f),
+      PressureBar_(0.0f) {}
 
 void PressureSensor::init() {
     delay(kStartupDelayMs);
 
-    scale_.begin(dataPin_, clockPin_);
+    Scale_.begin(DataPin_, ClockPin_);
 
     Serial.println("Remove force from sensor...");
     delay(kUnloadDelayMs);
 
-    offset_ = scale_.read_average(kOffsetSampleCount);
+    Offset_ = Scale_.read_average(kOffsetSampleCount);
 
     Serial.print("Offset = ");
-    Serial.println(offset_);
+    Serial.println(Offset_);
 }
 
 bool PressureSensor::update() {
-    if (!scale_.is_ready()) {
+    if (!Scale_.is_ready()) {
         return false;
     }
 
-    raw_ = scale_.read_average(kMeasurementSampleCount);
-    relative_ = raw_ - offset_;
-    forceNewtons_ = static_cast<float>(relative_) * forcePerCount_;
-    pressureBar_ = forceNewtons_ / computeAreaSquareMeters() / kPascalsPerBar;
+    Raw_ = Scale_.read_average(kMeasurementSampleCount);
+    Relative_ = Raw_ - Offset_;
+    ForceNewtons_ = static_cast<float>(Relative_) * ForcePerCount_;
+    PressureBar_ = ForceNewtons_ / computeAreaSquareMeters() / kPascalsPerBar;
 
     return true;
 }
 
 long PressureSensor::getRaw() const {
-    return raw_;
+    return Raw_;
 }
 
 long PressureSensor::getRelative() const {
-    return relative_;
+    return Relative_;
 }
 
 float PressureSensor::getForceNewtons() const {
-    return forceNewtons_;
+    return ForceNewtons_;
 }
 
 float PressureSensor::getPressureBar() const {
-    return pressureBar_;
+    return PressureBar_;
 }
 
 float PressureSensor::computeAreaSquareMeters() const {
-    const float radiusMeters = syringeDiameterMeters_ * 0.5f;
+    const float radiusMeters = SyringeDiameterMeters_ * 0.5f;
     return PI * radiusMeters * radiusMeters;
 }

@@ -35,16 +35,16 @@ class PressureSensor {
    private:
     float computeAreaSquareMeters() const;
 
-    HX711 scale_;
-    const uint8_t dataPin_;
-    const uint8_t clockPin_;
-    const float forcePerCount_;
-    const float syringeDiameterMeters_;
-    long offset_;
-    long raw_;
-    long relative_;
-    float forceNewtons_;
-    float pressureBar_;
+    HX711 Scale_;
+    const uint8_t DataPin_;
+    const uint8_t ClockPin_;
+    const float ForcePerCount_;
+    const float SyringeDiameterMeters_;
+    long Offset_;
+    long Raw_;
+    long Relative_;
+    float ForceNewtons_;
+    float PressureBar_;
 };
 
 #endif  // PRESSURE_SENSOR_H
