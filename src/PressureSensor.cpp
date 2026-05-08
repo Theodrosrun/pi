@@ -21,8 +21,8 @@ namespace {
 constexpr float C_ForcePerCount = 9.81f / 50000.0f;
 constexpr float C_SyringeDiameterMeters = 0.010f;
 
-constexpr unsigned long C_StartupDelay_ms = 1500;
-constexpr unsigned long C_UnloadDelay_ms = 2000;
+constexpr uint32_t C_StartupDelay_ms = 1500u;
+constexpr uint32_t C_UnloadDelay_ms = 2000u;
 constexpr uint8_t C_OffsetSampleCount = 20;
 constexpr uint8_t C_MeasurementSampleCount = 5;
 constexpr float C_PascalsPerBar = 100000.0f;
@@ -48,7 +48,7 @@ void PressureSensor::Init() {
     Serial.println("Remove force from sensor...");
     delay(C_UnloadDelay_ms);
 
-    Offset_ = Scale_.read_average(C_OffsetSampleCount);
+    Offset_ = static_cast<int32_t>(Scale_.read_average(C_OffsetSampleCount));
 
     Serial.print("Offset = ");
     Serial.println(Offset_);
@@ -61,7 +61,7 @@ bool PressureSensor::Update() {
         return false;
     }
 
-    Raw_ = Scale_.read_average(C_MeasurementSampleCount);
+    Raw_ = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
     Relative_ = Raw_ - Offset_;
     Force_N_ = static_cast<float>(Relative_) * C_ForcePerCount;
     Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / C_PascalsPerBar;
@@ -71,13 +71,13 @@ bool PressureSensor::Update() {
 
 //_______________________________________________________________________________________________
 
-long PressureSensor::GetRaw() const {
+int32_t PressureSensor::GetRaw() const {
     return Raw_;
 }
 
 //_______________________________________________________________________________________________
 
-long PressureSensor::GetRelative() const {
+int32_t PressureSensor::GetRelative() const {
     return Relative_;
 }
 

@@ -35,11 +35,11 @@ class PressureSensor {
 
     //! \brief Gets the raw sensor reading
     //! \return The raw sensor reading
-    long GetRaw() const;
+    int32_t GetRaw() const;
 
     //! \brief Gets the relative sensor reading (raw - offset)
     //! \return The relative sensor reading
-    long GetRelative() const;
+    int32_t GetRelative() const;
 
     //! \brief Gets the computed force in [N]
     //! \return The computed force in [N]
@@ -57,9 +57,9 @@ class PressureSensor {
     HX711 Scale_;             //!< The HX711 load cell amplifier instance
     const uint8_t DataPin_;   //!< The data pin connected to the HX711
     const uint8_t ClockPin_;  //!< The clock pin connected to the HX711
-    long Offset_;             //!< The offset value for the sensor
-    long Raw_;                //!< The raw sensor reading
-    long Relative_;           //!< The relative sensor reading (raw - offset)
+    int32_t Offset_;          //!< The offset value for the sensor
+    int32_t Raw_;             //!< The raw sensor reading
+    int32_t Relative_;        //!< The relative sensor reading (raw - offset)
     float Force_N_;           //!< The computed force in [N]
     float Pressure_bar_;      //!< The computed pressure in [bars]
 };
