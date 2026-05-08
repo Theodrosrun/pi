@@ -42,7 +42,7 @@ PressureSensor::PressureSensor(uint8_t dataPin,
 
 //_______________________________________________________________________________________________
 
-void PressureSensor::init() {
+void PressureSensor::Init() {
     delay(C_StartupDelay_ms);
 
     Scale_.begin(DataPin_, ClockPin_);
@@ -58,7 +58,7 @@ void PressureSensor::init() {
 
 //_______________________________________________________________________________________________
 
-bool PressureSensor::update() {
+bool PressureSensor::Update() {
     if (!Scale_.is_ready()) {
         return false;
     }
@@ -66,38 +66,38 @@ bool PressureSensor::update() {
     Raw_ = Scale_.read_average(C_MeasurementSampleCount);
     Relative_ = Raw_ - Offset_;
     Force_N_ = static_cast<float>(Relative_) * ForcePerCount_;
-    Pressure_bar_ = Force_N_ / computeAreaSquareMeters() / C_PascalsPerBar;
+    Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / C_PascalsPerBar;
 
     return true;
 }
 
 //_______________________________________________________________________________________________
 
-long PressureSensor::getRaw() const {
+long PressureSensor::GetRaw() const {
     return Raw_;
 }
 
 //_______________________________________________________________________________________________
 
-long PressureSensor::getRelative() const {
+long PressureSensor::GetRelative() const {
     return Relative_;
 }
 
 //_______________________________________________________________________________________________
 
-float PressureSensor::getForce_n() const {
+float PressureSensor::GetForce_n() const {
     return Force_N_;
 }
 
 //_______________________________________________________________________________________________
 
-float PressureSensor::getPressure_bar() const {
+float PressureSensor::GetPressure_bar() const {
     return Pressure_bar_;
 }
 
 //_______________________________________________________________________________________________
 
-float PressureSensor::computeAreaSquareMeters() const {
+float PressureSensor::ComputeAreaSquareMeters() const {
     const float radiusMeters = SyringeDiameterMeters_ * 0.5f;
     return PI * radiusMeters * radiusMeters;
 }

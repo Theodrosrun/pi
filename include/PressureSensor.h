@@ -29,32 +29,32 @@ class PressureSensor {
     );
 
     //! \brief Initializes the sensor
-    void init();
+    void Init();
 
     //! \brief Updates the sensor readings
     //! \return True if the sensor is ready and the update was successful, false otherwise
-    bool update();
+    bool Update();
 
     //! \brief Gets the raw sensor reading
     //! \return The raw sensor reading
-    long getRaw() const;
+    long GetRaw() const;
 
     //! \brief Gets the relative sensor reading (raw - offset)
     //! \return The relative sensor reading
-    long getRelative() const;
+    long GetRelative() const;
 
     //! \brief Gets the computed force in [N]
     //! \return The computed force in [N]
-    float getForce_n() const;
+    float GetForce_n() const;
 
     //! \brief Gets the computed pressure in [bars]
     //! \return The computed pressure in [bars]
-    float getPressure_bar() const;
+    float GetPressure_bar() const;
 
    private:
     //! \brief Computes the area of the syringe in square meters
     //! \return The area of the syringe in square meters
-    float computeAreaSquareMeters() const;
+    float ComputeAreaSquareMeters() const;
 
     HX711 Scale_;                        //!< The HX711 load cell amplifier instance
     const uint8_t DataPin_;              //!< The data pin connected to the HX711
