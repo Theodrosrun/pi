@@ -14,18 +14,17 @@
 
 #include <Arduino.h>
 
+#include "PinConfig.h"
 #include "PressureSensor.h"
 
 namespace {
 
-constexpr uint8_t kHx711DataPin = 12;
-constexpr uint8_t kHx711ClockPin = 13;
 constexpr float kForcePerCount = 9.81f / 50000.0f;
 constexpr float kSyringeDiameterMeters = 0.010f;
 constexpr unsigned long kLoopDelayMs = 300;
 
-PressureSensor PressureSensor_(kHx711DataPin,
-                               kHx711ClockPin,
+PressureSensor PressureSensor_(HX711_DATA_PIN,
+                               HX711_CLOCK_PIN,
                                kForcePerCount,
                                kSyringeDiameterMeters);
 
@@ -33,23 +32,23 @@ PressureSensor PressureSensor_(kHx711DataPin,
 
 void setup() {
     Serial.begin(9600);
-    PressureSensor_.init();
+    PressureSensor_.Init();
 }
 
 void loop() {
-    if (PressureSensor_.update()) {
+    if (PressureSensor_.Update()) {
         Serial.print("Raw = ");
-        Serial.print(PressureSensor_.getRaw());
+        Serial.print(PressureSensor_.GetRaw());
 
         Serial.print(" | Relative = ");
-        Serial.print(PressureSensor_.getRelative());
+        Serial.print(PressureSensor_.GetRelative());
 
         Serial.print(" | Force = ");
-        Serial.print(PressureSensor_.getForce_n(), 3);
+        Serial.print(PressureSensor_.GetForce_n(), 3);
         Serial.print(" N");
 
         Serial.print(" | Pressure = ");
-        Serial.print(PressureSensor_.getPressure_bar(), 4);
+        Serial.print(PressureSensor_.GetPressure_bar(), 4);
         Serial.println(" bar");
     } else {
         Serial.println("HX711 not ready");
