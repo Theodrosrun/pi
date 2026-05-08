@@ -21,7 +21,7 @@ namespace {
 
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure sensor
 
-constexpr uint32_t C_LoopDelay_ms = 300u;  //!< Loop delay in milliseconds
+const uint32_t C_LoopDelay_ms = 300u;  //!< Loop delay in milliseconds
 
 }  // namespace
 
