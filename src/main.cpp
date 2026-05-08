@@ -49,8 +49,6 @@ void loop() {
         Serial.print(" | Pressure = ");
         Serial.print(PressureSensor_.GetPressure_bar(), 4);
         Serial.println(" bar");
-    } else {
-        Serial.println("HX711 not ready");
     }
 
     delay(C_LoopDelay_ms);
