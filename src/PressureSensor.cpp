@@ -13,6 +13,7 @@
 //_______________________________________________________________________________________________
 
 #include "PressureSensor.h"
+#include "UnitConversions.h"
 
 #include <Arduino.h>
 
@@ -25,7 +26,6 @@ const uint32_t C_StartupDelay_ms = 1500u;
 const uint32_t C_UnloadDelay_ms = 2000u;
 const uint8_t C_OffsetSampleCount = 20;
 const uint8_t C_MeasurementSampleCount = 5;
-const float C_PascalsPerBar = 100000.0f;
 
 }  // namespace
 
@@ -64,7 +64,7 @@ bool PressureSensor::Update() {
     Raw_ = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
     Relative_ = Raw_ - Offset_;
     Force_N_ = static_cast<float>(Relative_) * C_ForcePerCount;
-    Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / C_PascalsPerBar;
+    Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / UnitConversions::C_PascalsPerBar;
 
     return true;
 }
