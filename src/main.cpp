@@ -45,11 +45,11 @@ void loop() {
         Serial.print(PressureSensor_.getRelative());
 
         Serial.print(" | Force = ");
-        Serial.print(PressureSensor_.getForceNewtons(), 3);
+        Serial.print(PressureSensor_.getForce_n(), 3);
         Serial.print(" N");
 
         Serial.print(" | Pressure = ");
-        Serial.print(PressureSensor_.getPressureBar(), 4);
+        Serial.print(PressureSensor_.getPressure_bar(), 4);
         Serial.println(" bar");
     } else {
         Serial.println("HX711 not ready");

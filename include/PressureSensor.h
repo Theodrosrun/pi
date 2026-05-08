@@ -15,36 +15,57 @@
 #ifndef PRESSURE_SENSOR_H
 #define PRESSURE_SENSOR_H
 
-#include <Arduino.h>
 #include <HX711.h>
+#include <stdint.h>
 
+//! \brief Pressure Sensor class
 class PressureSensor {
    public:
-    PressureSensor(uint8_t dataPin,
-                   uint8_t clockPin,
-                   float forcePerCount,
-                   float syringeDiameterMeters);
+    //! \brief Constructor
+    PressureSensor(uint8_t dataPin,      //!< The data pin connected to the HX711
+                   uint8_t clockPin,     //!< The clock pin connected to the HX711
+                   float forcePerCount,  //!< The force per count calibration factor [N/count]
+                   float syringeDiameterMeters  //!< The diameter of the syringe in meters
+    );
 
+    //! \brief Initializes the sensor
     void init();
+
+    //! \brief Updates the sensor readings
+    //! \return True if the sensor is ready and the update was successful, false otherwise
     bool update();
+
+    //! \brief Gets the raw sensor reading
+    //! \return The raw sensor reading
     long getRaw() const;
+
+    //! \brief Gets the relative sensor reading (raw - offset)
+    //! \return The relative sensor reading
     long getRelative() const;
-    float getForceNewtons() const;
-    float getPressureBar() const;
+
+    //! \brief Gets the computed force in [N]
+    //! \return The computed force in [N]
+    float getForce_n() const;
+
+    //! \brief Gets the computed pressure in [bars]
+    //! \return The computed pressure in [bars]
+    float getPressure_bar() const;
 
    private:
+    //! \brief Computes the area of the syringe in square meters
+    //! \return The area of the syringe in square meters
     float computeAreaSquareMeters() const;
 
-    HX711 Scale_;
-    const uint8_t DataPin_;
-    const uint8_t ClockPin_;
-    const float ForcePerCount_;
-    const float SyringeDiameterMeters_;
-    long Offset_;
-    long Raw_;
-    long Relative_;
-    float ForceNewtons_;
-    float PressureBar_;
+    HX711 Scale_;                        //!< The HX711 load cell amplifier instance
+    const uint8_t DataPin_;              //!< The data pin connected to the HX711
+    const uint8_t ClockPin_;             //!< The clock pin connected to the HX711
+    const float ForcePerCount_;          //!< The force per count calibration factor [N/count]
+    const float SyringeDiameterMeters_;  //!< The diameter of the syringe in meters
+    long Offset_;                        //!< The offset value for the sensor
+    long Raw_;                           //!< The raw sensor reading
+    long Relative_;                      //!< The relative sensor reading (raw - offset)
+    float Force_N_;                      //!< The computed force in [N]
+    float Pressure_bar_;                 //!< The computed pressure in [bars]
 };
 
 #endif  // PRESSURE_SENSOR_H

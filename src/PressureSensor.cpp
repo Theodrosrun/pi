@@ -14,13 +14,15 @@
 
 #include "PressureSensor.h"
 
+#include <Arduino.h>
+
 namespace {
 
-constexpr unsigned long kStartupDelayMs = 1500;
-constexpr unsigned long kUnloadDelayMs = 2000;
-constexpr uint8_t kOffsetSampleCount = 20;
-constexpr uint8_t kMeasurementSampleCount = 5;
-constexpr float kPascalsPerBar = 100000.0f;
+constexpr unsigned long C_StartupDelay_ms = 1500;
+constexpr unsigned long C_UnloadDelay_ms = 2000;
+constexpr uint8_t C_OffsetSampleCount = 20;
+constexpr uint8_t C_MeasurementSampleCount = 5;
+constexpr float C_PascalsPerBar = 100000.0f;
 
 }  // namespace
 
@@ -35,51 +37,65 @@ PressureSensor::PressureSensor(uint8_t dataPin,
       Offset_(0),
       Raw_(0),
       Relative_(0),
-      ForceNewtons_(0.0f),
-      PressureBar_(0.0f) {}
+      Force_N_(0.0f),
+      Pressure_bar_(0.0f) {}
+
+//_______________________________________________________________________________________________
 
 void PressureSensor::init() {
-    delay(kStartupDelayMs);
+    delay(C_StartupDelay_ms);
 
     Scale_.begin(DataPin_, ClockPin_);
 
     Serial.println("Remove force from sensor...");
-    delay(kUnloadDelayMs);
+    delay(C_UnloadDelay_ms);
 
-    Offset_ = Scale_.read_average(kOffsetSampleCount);
+    Offset_ = Scale_.read_average(C_OffsetSampleCount);
 
     Serial.print("Offset = ");
     Serial.println(Offset_);
 }
+
+//_______________________________________________________________________________________________
 
 bool PressureSensor::update() {
     if (!Scale_.is_ready()) {
         return false;
     }
 
-    Raw_ = Scale_.read_average(kMeasurementSampleCount);
+    Raw_ = Scale_.read_average(C_MeasurementSampleCount);
     Relative_ = Raw_ - Offset_;
-    ForceNewtons_ = static_cast<float>(Relative_) * ForcePerCount_;
-    PressureBar_ = ForceNewtons_ / computeAreaSquareMeters() / kPascalsPerBar;
+    Force_N_ = static_cast<float>(Relative_) * ForcePerCount_;
+    Pressure_bar_ = Force_N_ / computeAreaSquareMeters() / C_PascalsPerBar;
 
     return true;
 }
+
+//_______________________________________________________________________________________________
 
 long PressureSensor::getRaw() const {
     return Raw_;
 }
 
+//_______________________________________________________________________________________________
+
 long PressureSensor::getRelative() const {
     return Relative_;
 }
 
-float PressureSensor::getForceNewtons() const {
-    return ForceNewtons_;
+//_______________________________________________________________________________________________
+
+float PressureSensor::getForce_n() const {
+    return Force_N_;
 }
 
-float PressureSensor::getPressureBar() const {
-    return PressureBar_;
+//_______________________________________________________________________________________________
+
+float PressureSensor::getPressure_bar() const {
+    return Pressure_bar_;
 }
+
+//_______________________________________________________________________________________________
 
 float PressureSensor::computeAreaSquareMeters() const {
     const float radiusMeters = SyringeDiameterMeters_ * 0.5f;
