@@ -61,6 +61,18 @@ void LCDDisplay::Display(const String& firstLine, const String& secondLine) {
 
 //_______________________________________________________________________________________________
 
+int LCDDisplay::GetButtonValue() const {
+    return ButtonValue_;
+}
+
+//_______________________________________________________________________________________________
+
+const char* LCDDisplay::GetButtonName() const {
+    return ButtonName_;
+}
+
+//_______________________________________________________________________________________________
+
 void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
     LCD_.setCursor(0, row);
 
@@ -70,18 +82,6 @@ void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
     }
 
     LCD_.print(line.substring(0, C_LCDColumns));
-}
-
-//_______________________________________________________________________________________________
-
-int LCDDisplay::GetButtonValue() const {
-    return ButtonValue_;
-}
-
-//_______________________________________________________________________________________________
-
-const char* LCDDisplay::GetButtonName() const {
-    return ButtonName_;
 }
 
 //_______________________________________________________________________________________________
