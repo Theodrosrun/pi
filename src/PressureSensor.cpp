@@ -26,7 +26,7 @@ const uint32_t C_UnloadDelay_ms = 2000u;
 const uint8_t C_OffsetSampleCount = 20;
 const uint8_t C_MeasurementSampleCount = 5;
 // Sensor and syringe parameters
-const float C_ForcePerCount = 0.00005331522f;
+const float C_ForcePerCount = 5.331522e-5f;
 const float C_SyringeDiameterMeters = 0.010f;
 }  // namespace
 
