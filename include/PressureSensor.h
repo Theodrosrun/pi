@@ -61,7 +61,7 @@ class PressureSensor {
     int32_t Offset_;          //!< The offset value for the sensor
     int32_t Raw_;             //!< The raw sensor reading
     int32_t Relative_;        //!< The relative sensor reading (raw - offset)
-    float Force_N_;           //!< The computed force in [N]
+    float Force_n_;           //!< The computed force in [N]
     float Pressure_bar_;      //!< The computed pressure in [bars]
 };
 

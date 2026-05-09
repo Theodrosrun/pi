@@ -36,7 +36,7 @@ PressureSensor::PressureSensor(const uint8_t dataPin, const uint8_t clockPin)
       Offset_(0),
       Raw_(0),
       Relative_(0),
-      Force_N_(0.0f),
+      Force_n_(0.0f),
       Pressure_bar_(0.0f) {}
 
 //_______________________________________________________________________________________________
@@ -64,8 +64,8 @@ bool PressureSensor::Update() {
 
     Raw_ = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
     Relative_ = Raw_ - Offset_;
-    Force_N_ = static_cast<float>(Relative_) * C_ForcePerCount;
-    Pressure_bar_ = Force_N_ / ComputeAreaSquareMeters() / UnitConversions::C_PascalsPerBar;
+    Force_n_ = static_cast<float>(Relative_) * C_ForcePerCount;
+    Pressure_bar_ = Force_n_ / ComputeAreaSquareMeters() / UnitConversions::C_PascalsPerBar;
 
     return true;
 }
@@ -85,7 +85,7 @@ int32_t PressureSensor::GetRelative() const {
 //_______________________________________________________________________________________________
 
 float PressureSensor::GetForce_n() const {
-    return Force_N_;
+    return Force_n_;
 }
 
 //_______________________________________________________________________________________________
