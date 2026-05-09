@@ -12,8 +12,8 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#ifndef PRESSURE_SENSOR_H
-#define PRESSURE_SENSOR_H
+#ifndef PRESSURESENSOR_H
+#define PRESSURESENSOR_H
 
 #include <HX711.h>
 #include <stdint.h>
@@ -64,4 +64,4 @@ class PressureSensor {
     float Pressure_bar_;      //!< The computed pressure in [bars]
 };
 
-#endif  // PRESSURE_SENSOR_H
+#endif  // PRESSURESENSOR_H
