@@ -48,7 +48,7 @@ class LCDDisplay {
     void DisplayRow(const uint8_t row, const String& text);
 
    private:
-    LiquidCrystal LCD_;  //!< LCD driver instance
+    LiquidCrystal LCDController_;  //!< LCD controller instance
 };
 
 #endif  // LCDDISPLAY_H
