@@ -23,8 +23,8 @@ namespace {
 const uint32_t C_StartupDelay_ms = 1500u;
 const uint32_t C_UnloadDelay_ms = 2000u;
 // Calibration and measurement parameters
-const uint8_t C_OffsetSampleCount = 20;
-const uint8_t C_MeasurementSampleCount = 5;
+const uint8_t C_OffsetSampleCount = 20u;
+const uint8_t C_MeasurementSampleCount = 5u;
 // Sensor and syringe parameters
 const float C_ForcePerCount = 5.331522e-5f;
 const float C_SyringeDiameterMeters = 0.010f;
