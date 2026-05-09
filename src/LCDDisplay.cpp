@@ -97,20 +97,20 @@ void LCDDisplay::DisplayRow(const uint8_t row, const String& text) {
 
 const char* LCDDisplay::DecodeButtonName(const int32_t value) const {
     if (value < C_ButtonRightThreshold) {
-        return "RIGHT";
+        return "Right";
     }
     if (value < C_ButtonUpThreshold) {
-        return "UP";
+        return "Up";
     }
     if (value < C_ButtonDownThreshold) {
-        return "DOWN";
+        return "Down";
     }
     if (value < C_ButtonLeftThreshold) {
-        return "LEFT";
+        return "Left";
     }
     if (value < C_ButtonSelectThreshold) {
-        return "SELECT";
+        return "Select";
     }
 
-    return "NONE";
+    return "None";
 }
