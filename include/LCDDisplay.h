@@ -33,7 +33,7 @@ class LCDDisplay {
     //! \brief Initializes the LCD
     void Init();
 
-    //! \brief Updates the button state
+    //! \brief Updates the LCD state
     void Update();
 
     //! \brief Displays the two LCD lines
