@@ -61,6 +61,7 @@ class LCDDisplay {
     //! \return Button name matching the current threshold
     const char* DecodeButtonName(const int32_t value) const;
 
+   private:
     LiquidCrystal LCD_;        //!< LCD driver instance
     const uint8_t ButtonPin_;  //!< LCD keypad analog button pin
     int32_t ButtonValue_;      //!< Last raw button value

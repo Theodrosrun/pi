@@ -54,6 +54,7 @@ class PressureSensor {
     //! \return The area of the syringe in square meters
     float ComputeAreaSquareMeters() const;
 
+   private:
     HX711 Scale_;             //!< The HX711 load cell amplifier instance
     const uint8_t DataPin_;   //!< The data pin connected to the HX711
     const uint8_t ClockPin_;  //!< The clock pin connected to the HX711
