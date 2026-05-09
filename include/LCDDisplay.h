@@ -22,13 +22,13 @@
 class LCDDisplay {
    public:
     //! \brief Constructor
-    LCDDisplay(uint8_t registerSelectPin,  //!< LCD RS pin
-               uint8_t enablePin,          //!< LCD enable pin
-               uint8_t dataPin4,           //!< LCD data pin D4
-               uint8_t dataPin5,           //!< LCD data pin D5
-               uint8_t dataPin6,           //!< LCD data pin D6
-               uint8_t dataPin7,           //!< LCD data pin D7
-               uint8_t buttonPin           //!< LCD keypad analog button pin
+    LCDDisplay(const uint8_t registerSelectPin,  //!< LCD RS pin
+               const uint8_t enablePin,          //!< LCD enable pin
+               const uint8_t dataPin4,           //!< LCD data pin D4
+               const uint8_t dataPin5,           //!< LCD data pin D5
+               const uint8_t dataPin6,           //!< LCD data pin D6
+               const uint8_t dataPin7,           //!< LCD data pin D7
+               const uint8_t buttonPin           //!< LCD keypad analog button pin
     );
 
     //! \brief Initializes the LCD
@@ -54,12 +54,12 @@ class LCDDisplay {
     //! \brief Displays a padded line on the LCD
     //! \param row LCD row index
     //! \param text Text to display
-    void DisplayRow(uint8_t row, const String& text);
+    void DisplayRow(const uint8_t row, const String& text);
 
     //! \brief Decodes a raw button reading
     //! \param value Raw analog button value
     //! \return Button name matching the current threshold
-    const char* DecodeButtonName(int32_t value) const;
+    const char* DecodeButtonName(const int32_t value) const;
 
     LiquidCrystal LCD_;        //!< LCD driver instance
     const uint8_t ButtonPin_;  //!< LCD keypad analog button pin

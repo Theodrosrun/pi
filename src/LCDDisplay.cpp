@@ -29,13 +29,13 @@ const int32_t C_ButtonLeftThreshold = 650;
 const int32_t C_ButtonSelectThreshold = 900;
 }  // namespace
 
-LCDDisplay::LCDDisplay(uint8_t registerSelectPin,
-                       uint8_t enablePin,
-                       uint8_t dataPin4,
-                       uint8_t dataPin5,
-                       uint8_t dataPin6,
-                       uint8_t dataPin7,
-                       uint8_t buttonPin)
+LCDDisplay::LCDDisplay(const uint8_t registerSelectPin,
+                       const uint8_t enablePin,
+                       const uint8_t dataPin4,
+                       const uint8_t dataPin5,
+                       const uint8_t dataPin6,
+                       const uint8_t dataPin7,
+                       const uint8_t buttonPin)
     : LCD_(registerSelectPin, enablePin, dataPin4, dataPin5, dataPin6, dataPin7),
       ButtonPin_(buttonPin),
       ButtonValue_(1023),
@@ -80,7 +80,7 @@ const char* LCDDisplay::GetButtonName() const {
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
+void LCDDisplay::DisplayRow(const uint8_t row, const String& text) {
     LCD_.setCursor(0, row);
 
     String line = text;
@@ -93,7 +93,7 @@ void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
 
 //_______________________________________________________________________________________________
 
-const char* LCDDisplay::DecodeButtonName(int32_t value) const {
+const char* LCDDisplay::DecodeButtonName(const int32_t value) const {
     if (value < C_ButtonRightThreshold) {
         return "RIGHT";
     }

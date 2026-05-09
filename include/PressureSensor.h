@@ -22,8 +22,8 @@
 class PressureSensor {
    public:
     //! \brief Constructor
-    PressureSensor(uint8_t dataPin,  //!< The data pin connected to the HX711
-                   uint8_t clockPin  //!< The clock pin connected to the HX711
+    PressureSensor(const uint8_t dataPin,  //!< The data pin connected to the HX711
+                   const uint8_t clockPin  //!< The clock pin connected to the HX711
     );
 
     //! \brief Initializes the sensor
