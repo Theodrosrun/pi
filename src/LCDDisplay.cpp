@@ -17,9 +17,16 @@
 #include <Arduino.h>
 
 namespace {
+// Configuration
 const uint8_t C_LCDColumns = 16u;
 const uint8_t C_LCDRows = 2u;
 const uint16_t C_LCDStartupDelay_ms = 200u;
+// Button thresholds
+const int C_ButtonRightThreshold = 50;
+const int C_ButtonUpThreshold = 200;
+const int C_ButtonDownThreshold = 400;
+const int C_ButtonLeftThreshold = 650;
+const int C_ButtonSelectThreshold = 900;
 }  // namespace
 
 LCDDisplay::LCDDisplay(uint8_t registerSelectPin,
@@ -87,19 +94,19 @@ void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
 //_______________________________________________________________________________________________
 
 const char* LCDDisplay::DecodeButtonName(int value) const {
-    if (value < 50) {
+    if (value < C_ButtonRightThreshold) {
         return "RIGHT";
     }
-    if (value < 200) {
+    if (value < C_ButtonUpThreshold) {
         return "UP";
     }
-    if (value < 400) {
+    if (value < C_ButtonDownThreshold) {
         return "DOWN";
     }
-    if (value < 650) {
+    if (value < C_ButtonLeftThreshold) {
         return "LEFT";
     }
-    if (value < 900) {
+    if (value < C_ButtonSelectThreshold) {
         return "SELECT";
     }
 

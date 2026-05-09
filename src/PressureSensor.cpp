@@ -19,11 +19,13 @@
 #include "UnitConversions.h"
 
 namespace {
+// Configuration constants
 const uint32_t C_StartupDelay_ms = 1500u;
 const uint32_t C_UnloadDelay_ms = 2000u;
+// Calibration and measurement parameters
 const uint8_t C_OffsetSampleCount = 20;
 const uint8_t C_MeasurementSampleCount = 5;
-
+// Sensor and syringe parameters
 const float C_ForcePerCount = 0.00005331522f;
 const float C_SyringeDiameterMeters = 0.010f;
 }  // namespace
