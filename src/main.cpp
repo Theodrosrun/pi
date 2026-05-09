@@ -18,6 +18,7 @@
 #include "LCD.h"
 #include "PinConfig.h"
 #include "PressureSensor.h"
+#include "StepperMotor.h"
 
 namespace {
 // Configuration constants
@@ -33,7 +34,9 @@ LCD LCD_(LCD_RS_PIN,
          LCD_DATA6_PIN,
          LCD_DATA7_PIN);                                          //!< LCD
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure Sensor
-
+StepperMotor StepperMotor_(STEPPER_STEP_PIN,
+                           STEPPER_DIRECTION_PIN,
+                           STEPPER_ENABLE_PIN);  //!< Stepper Motor
 }  // namespace
 
 //_______________________________________________________________________________________________
@@ -45,6 +48,10 @@ void setup() {
 
     LCD_.Init();
     LCD_.Display("LCD Keypad", "Ready");
+
+    StepperMotor_.Init();
+    StepperMotor_.Enable();
+    StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
 }
 
 //_______________________________________________________________________________________________
@@ -72,6 +79,8 @@ void loop() {
 
         LCD_.Display("Pression:", String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     }
+
+    StepperMotor_.Step(200u, 1000u);
 
     delay(C_LoopDelay_ms);
 }
