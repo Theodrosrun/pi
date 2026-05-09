@@ -53,7 +53,7 @@ void loop() {
     ButtonPad_.Update();
 
     Serial.print("Button = ");
-    Serial.println(ButtonPad_.GetButtonPressedName());
+    Serial.println(ButtonPad_.GetPressedButtonName());
 
     if (PressureSensor_.Update()) {
         Serial.print("Raw = ");

@@ -32,17 +32,17 @@ class ButtonPad {
 
     //! \brief Gets the current pressed button
     //! \return Current pressed button identifier
-    Button GetButtonPressed() const;
+    Button GetPressedButton() const;
 
     //! \brief Gets the current pressed button name
     //! \return Current pressed button name
-    const char* GetButtonPressedName() const;
+    const char* GetPressedButtonName() const;
 
    private:
     //! \brief Decodes a raw button reading
     //! \param value Raw analog button value
     //! \return Button identifier matching the current threshold
-    Button DecodeButtonPressed(const int32_t value) const;
+    Button DecodePressedButton(const int32_t value) const;
 
    private:
     const uint8_t ButtonPin_;  //!< Button analog input pin

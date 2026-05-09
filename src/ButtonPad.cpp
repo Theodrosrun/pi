@@ -32,18 +32,18 @@ ButtonPad::ButtonPad(const uint8_t buttonPin)
 
 void ButtonPad::Update() {
     const int32_t buttonValue = static_cast<int32_t>(analogRead(ButtonPin_));
-    ButtonPressed_ = DecodeButtonPressed(buttonValue);
+    ButtonPressed_ = DecodePressedButton(buttonValue);
 }
 
 //_______________________________________________________________________________________________
 
-ButtonPad::Button ButtonPad::GetButtonPressed() const {
+ButtonPad::Button ButtonPad::GetPressedButton() const {
     return ButtonPressed_;
 }
 
 //_______________________________________________________________________________________________
 
-const char* ButtonPad::GetButtonPressedName() const {
+const char* ButtonPad::GetPressedButtonName() const {
     if (ButtonPressed_ == Button::Right) {
         return "Right";
     }
@@ -65,7 +65,7 @@ const char* ButtonPad::GetButtonPressedName() const {
 
 //_______________________________________________________________________________________________
 
-ButtonPad::Button ButtonPad::DecodeButtonPressed(const int32_t value) const {
+ButtonPad::Button ButtonPad::DecodePressedButton(const int32_t value) const {
     if (value < C_ButtonRightThreshold) {
         return Button::Right;
     }
