@@ -81,9 +81,11 @@ const char* LCDDisplay::GetButtonName() const {
 //_______________________________________________________________________________________________
 
 void LCDDisplay::DisplayRow(const uint8_t row, const String& text) {
+    String line = text;
+
     LCD_.setCursor(0, row);
 
-    String line = text;
+    // Pad the line with spaces to ensure it fills the entire row
     while (line.length() < C_LCDColumns) {
         line += " ";
     }
