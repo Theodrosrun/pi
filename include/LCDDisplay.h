@@ -44,7 +44,7 @@ class LCDDisplay {
 
     //! \brief Gets the current button analog value
     //! \return Raw analog button value
-    int GetButtonValue() const;
+    int32_t GetButtonValue() const;
 
     //! \brief Gets the current button name
     //! \return Current button name
@@ -59,11 +59,11 @@ class LCDDisplay {
     //! \brief Decodes a raw button reading
     //! \param value Raw analog button value
     //! \return Button name matching the current threshold
-    const char* DecodeButtonName(int value) const;
+    const char* DecodeButtonName(int32_t value) const;
 
     LiquidCrystal LCD_;        //!< LCD driver instance
     const uint8_t ButtonPin_;  //!< LCD keypad analog button pin
-    int ButtonValue_;          //!< Last raw button value
+    int32_t ButtonValue_;      //!< Last raw button value
     const char* ButtonName_;   //!< Last decoded button name
 };
 
