@@ -42,8 +42,7 @@ void setup() {
     PressureSensor_.Init();
 
     LCD_.Init();
-    LCD_.PrintLine(0, "LCD Keypad");
-    LCD_.PrintLine(1, "Ready");
+    LCD_.Display("LCD Keypad", "Ready");
 }
 
 //_______________________________________________________________________________________________
@@ -68,6 +67,8 @@ void loop() {
         Serial.print(" | Pressure = ");
         Serial.print(PressureSensor_.GetPressure_bar(), 4);
         Serial.println(" bar");
+
+        LCD_.Display("Pression:", String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     }
 
     delay(C_LoopDelay_ms);

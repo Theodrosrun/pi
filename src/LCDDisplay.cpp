@@ -37,8 +37,11 @@ LCDDisplay::LCDDisplay(uint8_t registerSelectPin,
 //_______________________________________________________________________________________________
 
 void LCDDisplay::Init() {
+    // Initialize the LCD with the specified number of columns and rows
     LCD_.begin(C_LCDColumns, C_LCDRows);
+    // Wait for the LCD to initialize
     delay(C_LCDStartupDelay_ms);
+    // Clear the LCD display
     LCD_.clear();
 }
 
@@ -51,7 +54,14 @@ void LCDDisplay::Update() {
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::PrintLine(uint8_t row, const String& text) {
+void LCDDisplay::Display(const String& firstLine, const String& secondLine) {
+    DisplayRow(0, firstLine);
+    DisplayRow(1, secondLine);
+}
+
+//_______________________________________________________________________________________________
+
+void LCDDisplay::DisplayRow(uint8_t row, const String& text) {
     LCD_.setCursor(0, row);
 
     String line = text;

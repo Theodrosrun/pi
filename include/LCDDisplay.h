@@ -37,10 +37,10 @@ class LCDDisplay {
     //! \brief Updates the button state
     void Update();
 
-    //! \brief Prints a padded line on the LCD
-    //! \param row LCD row index
-    //! \param text Text to display
-    void PrintLine(uint8_t row, const String& text);
+    //! \brief Displays the two LCD lines
+    //! \param firstLine Text to display on the first line
+    //! \param secondLine Text to display on the second line. If empty, the line is cleared.
+    void Display(const String& firstLine, const String& secondLine = "");
 
     //! \brief Gets the current button analog value
     //! \return Raw analog button value
@@ -51,6 +51,11 @@ class LCDDisplay {
     const char* GetButtonName() const;
 
    private:
+    //! \brief Displays a padded line on the LCD
+    //! \param row LCD row index
+    //! \param text Text to display
+    void DisplayRow(uint8_t row, const String& text);
+
     //! \brief Decodes a raw button reading
     //! \param value Raw analog button value
     //! \return Button name matching the current threshold
