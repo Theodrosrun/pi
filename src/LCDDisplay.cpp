@@ -14,6 +14,8 @@
 
 #include "LCDDisplay.h"
 
+#include <Arduino.h>
+
 namespace {
 const uint8_t C_LCDColumns = 16u;
 const uint8_t C_LCDRows = 2u;

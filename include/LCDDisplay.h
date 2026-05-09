@@ -15,7 +15,6 @@
 #ifndef LCDDISPLAY_H
 #define LCDDISPLAY_H
 
-#include <Arduino.h>
 #include <LiquidCrystal.h>
 #include <stdint.h>
 
