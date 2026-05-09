@@ -17,7 +17,7 @@
 #include <Arduino.h>
 
 namespace {
-// Configuration
+// Configuration constants
 const uint8_t C_LCDColumns = 16u;
 const uint8_t C_LCDRows = 2u;
 const uint16_t C_LCDStartupDelay_ms = 200u;

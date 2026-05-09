@@ -19,9 +19,12 @@
 #include "PressureSensor.h"
 
 namespace {
+// Configuration constants
+const uint32_t C_SerialBaudRate = 9600u;  //!< Serial baud rate
+const uint32_t C_LoopDelay_ms = 300u;     //!< Loop delay in milliseconds
 
+// Peripheral instances
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure sensor
-
 LCDDisplay LCD_(LCD_RS_PIN,
                 LCD_ENABLE_PIN,
                 LCD_DATA4_PIN,
@@ -29,15 +32,12 @@ LCDDisplay LCD_(LCD_RS_PIN,
                 LCD_DATA6_PIN,
                 LCD_DATA7_PIN,
                 LCD_BUTTON_PIN);  //!< LCD keypad shield
-
-const uint32_t C_LoopDelay_ms = 300u;  //!< Loop delay in milliseconds
-
 }  // namespace
 
 //_______________________________________________________________________________________________
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(C_SerialBaudRate);
 
     PressureSensor_.Init();
 
