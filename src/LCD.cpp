@@ -6,13 +6,13 @@
 // PROJECT  PI
 //_______________________________________________________________________________________________
 //
-//! \file    LCDDisplay.cpp
-//! \brief   Peripheral Abstraction Layer LCD display class
+//! \file    LCD.cpp
+//! \brief   Peripheral Abstraction Layer LCD class
 //!
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "LCDDisplay.h"
+#include "LCD.h"
 
 #include <Arduino.h>
 
@@ -23,17 +23,17 @@ const uint8_t C_LCDRows = 2u;
 const uint16_t C_LCDStartupDelay_ms = 200u;
 }  // namespace
 
-LCDDisplay::LCDDisplay(const uint8_t registerSelectPin,
-                       const uint8_t enablePin,
-                       const uint8_t dataPin4,
-                       const uint8_t dataPin5,
-                       const uint8_t dataPin6,
-                       const uint8_t dataPin7)
+LCD::LCD(const uint8_t registerSelectPin,
+         const uint8_t enablePin,
+         const uint8_t dataPin4,
+         const uint8_t dataPin5,
+         const uint8_t dataPin6,
+         const uint8_t dataPin7)
     : LCDController_(registerSelectPin, enablePin, dataPin4, dataPin5, dataPin6, dataPin7) {}
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::Init() {
+void LCD::Init() {
     // Initialize the LCD with the specified number of columns and rows
     LCDController_.begin(C_LCDColumns, C_LCDRows);
     // Wait for the LCD to initialize
@@ -44,14 +44,14 @@ void LCDDisplay::Init() {
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::Display(const String& firstLine, const String& secondLine) {
+void LCD::Display(const String& firstLine, const String& secondLine) {
     DisplayRow(0, firstLine);
     DisplayRow(1, secondLine);
 }
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::DisplayRow(const uint8_t row, const String& text) {
+void LCD::DisplayRow(const uint8_t row, const String& text) {
     String line = text;
 
     LCDController_.setCursor(0, row);

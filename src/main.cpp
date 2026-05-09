@@ -15,7 +15,7 @@
 #include <Arduino.h>
 
 #include "ButtonPad.h"
-#include "LCDDisplay.h"
+#include "LCD.h"
 #include "PinConfig.h"
 #include "PressureSensor.h"
 
@@ -26,12 +26,12 @@ const uint32_t C_LoopDelay_ms = 300u;     //!< Loop delay in milliseconds
 
 // Peripheral instances
 ButtonPad ButtonPad_(BUTTON_PAD_PIN);  //!< Button pad
-LCDDisplay LCD_(LCD_RS_PIN,
-                LCD_ENABLE_PIN,
-                LCD_DATA4_PIN,
-                LCD_DATA5_PIN,
-                LCD_DATA6_PIN,
-                LCD_DATA7_PIN);                                   //!< LCD keypad shield
+LCD LCD_(LCD_RS_PIN,
+         LCD_ENABLE_PIN,
+         LCD_DATA4_PIN,
+         LCD_DATA5_PIN,
+         LCD_DATA6_PIN,
+         LCD_DATA7_PIN);                                          //!< LCD keypad shield
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure sensor
 
 }  // namespace

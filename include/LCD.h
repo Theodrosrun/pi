@@ -6,28 +6,28 @@
 // PROJECT  PI
 //_______________________________________________________________________________________________
 //
-//! \file    LCDDisplay.h
-//! \brief   Peripheral Abstraction Layer LCD display class
+//! \file    LCD.h
+//! \brief   Peripheral Abstraction Layer LCD class
 //!
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#ifndef LCDDISPLAY_H
-#define LCDDISPLAY_H
+#ifndef LCD_H
+#define LCD_H
 
 #include <LiquidCrystal.h>
 #include <stdint.h>
 
-//! \brief LCD display class
-class LCDDisplay {
+//! \brief LCD class
+class LCD {
    public:
     //! \brief Constructor
-    LCDDisplay(const uint8_t registerSelectPin,  //!< LCD RS pin
-               const uint8_t enablePin,          //!< LCD enable pin
-               const uint8_t dataPin4,           //!< LCD data pin D4
-               const uint8_t dataPin5,           //!< LCD data pin D5
-               const uint8_t dataPin6,           //!< LCD data pin D6
-               const uint8_t dataPin7            //!< LCD data pin D7
+    LCD(const uint8_t registerSelectPin,  //!< LCD RS pin
+        const uint8_t enablePin,          //!< LCD enable pin
+        const uint8_t dataPin4,           //!< LCD data pin D4
+        const uint8_t dataPin5,           //!< LCD data pin D5
+        const uint8_t dataPin6,           //!< LCD data pin D6
+        const uint8_t dataPin7            //!< LCD data pin D7
     );
 
     //! \brief Initializes the LCD
@@ -51,4 +51,4 @@ class LCDDisplay {
     LiquidCrystal LCDController_;  //!< LCD controller instance
 };
 
-#endif  // LCDDISPLAY_H
+#endif  // LCD_H
