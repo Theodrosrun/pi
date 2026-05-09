@@ -21,12 +21,6 @@ namespace {
 const uint8_t C_LCDColumns = 16u;
 const uint8_t C_LCDRows = 2u;
 const uint16_t C_LCDStartupDelay_ms = 200u;
-// Button thresholds
-const int32_t C_ButtonRightThreshold = 50;
-const int32_t C_ButtonUpThreshold = 200;
-const int32_t C_ButtonDownThreshold = 400;
-const int32_t C_ButtonLeftThreshold = 650;
-const int32_t C_ButtonSelectThreshold = 900;
 }  // namespace
 
 LCDDisplay::LCDDisplay(const uint8_t registerSelectPin,
@@ -34,12 +28,8 @@ LCDDisplay::LCDDisplay(const uint8_t registerSelectPin,
                        const uint8_t dataPin4,
                        const uint8_t dataPin5,
                        const uint8_t dataPin6,
-                       const uint8_t dataPin7,
-                       const uint8_t buttonPin)
-    : LCD_(registerSelectPin, enablePin, dataPin4, dataPin5, dataPin6, dataPin7),
-      ButtonPin_(buttonPin),
-      ButtonValue_(1023),
-      ButtonName_("NONE") {}
+                       const uint8_t dataPin7)
+    : LCD_(registerSelectPin, enablePin, dataPin4, dataPin5, dataPin6, dataPin7) {}
 
 //_______________________________________________________________________________________________
 
@@ -54,28 +44,9 @@ void LCDDisplay::Init() {
 
 //_______________________________________________________________________________________________
 
-void LCDDisplay::Update() {
-    ButtonValue_ = static_cast<int32_t>(analogRead(ButtonPin_));
-    ButtonName_ = DecodeButtonName(ButtonValue_);
-}
-
-//_______________________________________________________________________________________________
-
 void LCDDisplay::Display(const String& firstLine, const String& secondLine) {
     DisplayRow(0, firstLine);
     DisplayRow(1, secondLine);
-}
-
-//_______________________________________________________________________________________________
-
-int32_t LCDDisplay::GetButtonValue() const {
-    return ButtonValue_;
-}
-
-//_______________________________________________________________________________________________
-
-const char* LCDDisplay::GetButtonName() const {
-    return ButtonName_;
 }
 
 //_______________________________________________________________________________________________
@@ -91,26 +62,4 @@ void LCDDisplay::DisplayRow(const uint8_t row, const String& text) {
     }
 
     LCD_.print(line.substring(0, C_LCDColumns));
-}
-
-//_______________________________________________________________________________________________
-
-const char* LCDDisplay::DecodeButtonName(const int32_t value) const {
-    if (value < C_ButtonRightThreshold) {
-        return "Right";
-    }
-    if (value < C_ButtonUpThreshold) {
-        return "Up";
-    }
-    if (value < C_ButtonDownThreshold) {
-        return "Down";
-    }
-    if (value < C_ButtonLeftThreshold) {
-        return "Left";
-    }
-    if (value < C_ButtonSelectThreshold) {
-        return "Select";
-    }
-
-    return "None";
 }
