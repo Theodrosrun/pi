@@ -19,7 +19,7 @@
 #define HX711_DATA_PIN 12
 #define HX711_CLOCK_PIN 13
 
-// Pin definitions for LCD display
+// Pin definitions for LCD
 #define LCD_RS_PIN 8
 #define LCD_ENABLE_PIN 9
 #define LCD_DATA4_PIN 4
@@ -27,7 +27,7 @@
 #define LCD_DATA6_PIN 6
 #define LCD_DATA7_PIN 7
 
-// Pin definitions for button pad
-#define BUTTON_PAD_PIN A0
+// Pin definitions for keypad
+#define KEYPAD_PIN A0
 
 #endif  // PINCONFIG_H

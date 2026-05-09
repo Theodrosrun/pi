@@ -6,25 +6,25 @@
 // PROJECT  PI
 //_______________________________________________________________________________________________
 //
-//! \file    ButtonPad.h
-//! \brief   Peripheral Abstraction Layer button pad class
+//! \file    Keypad.h
+//! \brief   Peripheral Abstraction Layer keypad class
 //!
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#ifndef BUTTONPAD_H
-#define BUTTONPAD_H
+#ifndef KEYPAD_H
+#define KEYPAD_H
 
 #include <stdint.h>
 
-//! \brief Button pad class
-class ButtonPad {
+//! \brief Keypad class
+class Keypad {
    public:
     //! \brief Button identifiers
     enum class Button : uint8_t { None, Right, Up, Down, Left, Select };
 
     //! \brief Constructor
-    ButtonPad(const uint8_t buttonPin  //!< Button analog input pin
+    Keypad(const uint8_t buttonPin  //!< Button analog input pin
     );
 
     //! \brief Updates the button state
@@ -49,4 +49,4 @@ class ButtonPad {
     Button ButtonPressed_;     //!< Last decoded button
 };
 
-#endif  // BUTTONPAD_H
+#endif  // KEYPAD_H

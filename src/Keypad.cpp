@@ -6,13 +6,13 @@
 // PROJECT  PI
 //_______________________________________________________________________________________________
 //
-//! \file    ButtonPad.cpp
-//! \brief   Peripheral Abstraction Layer button pad class
+//! \file    Keypad.cpp
+//! \brief   Peripheral Abstraction Layer keypad class
 //!
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "ButtonPad.h"
+#include "Keypad.h"
 
 #include <Arduino.h>
 
@@ -25,25 +25,24 @@ const int32_t C_ButtonLeftThreshold = 650;
 const int32_t C_ButtonSelectThreshold = 900;
 }  // namespace
 
-ButtonPad::ButtonPad(const uint8_t buttonPin)
-    : ButtonPin_(buttonPin), ButtonPressed_(Button::None) {}
+Keypad::Keypad(const uint8_t buttonPin) : ButtonPin_(buttonPin), ButtonPressed_(Button::None) {}
 
 //_______________________________________________________________________________________________
 
-void ButtonPad::Update() {
+void Keypad::Update() {
     const int32_t buttonValue = static_cast<int32_t>(analogRead(ButtonPin_));
     ButtonPressed_ = DecodePressedButton(buttonValue);
 }
 
 //_______________________________________________________________________________________________
 
-ButtonPad::Button ButtonPad::GetPressedButton() const {
+Keypad::Button Keypad::GetPressedButton() const {
     return ButtonPressed_;
 }
 
 //_______________________________________________________________________________________________
 
-const char* ButtonPad::GetPressedButtonName() const {
+const char* Keypad::GetPressedButtonName() const {
     if (ButtonPressed_ == Button::Right) {
         return "Right";
     }
@@ -65,7 +64,7 @@ const char* ButtonPad::GetPressedButtonName() const {
 
 //_______________________________________________________________________________________________
 
-ButtonPad::Button ButtonPad::DecodePressedButton(const int32_t value) const {
+Keypad::Button Keypad::DecodePressedButton(const int32_t value) const {
     if (value < C_ButtonRightThreshold) {
         return Button::Right;
     }

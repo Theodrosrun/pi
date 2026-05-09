@@ -14,7 +14,7 @@
 
 #include <Arduino.h>
 
-#include "ButtonPad.h"
+#include "Keypad.h"
 #include "LCD.h"
 #include "PinConfig.h"
 #include "PressureSensor.h"
@@ -25,14 +25,14 @@ const uint32_t C_SerialBaudRate = 9600u;  //!< Serial baud rate
 const uint32_t C_LoopDelay_ms = 300u;     //!< Loop delay in milliseconds
 
 // Peripheral instances
-ButtonPad ButtonPad_(BUTTON_PAD_PIN);  //!< Button pad
+Keypad Keypad_(KEYPAD_PIN);  //!< Keypad
 LCD LCD_(LCD_RS_PIN,
          LCD_ENABLE_PIN,
          LCD_DATA4_PIN,
          LCD_DATA5_PIN,
          LCD_DATA6_PIN,
-         LCD_DATA7_PIN);                                          //!< LCD keypad shield
-PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure sensor
+         LCD_DATA7_PIN);                                          //!< LCD
+PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure Sensor
 
 }  // namespace
 
@@ -50,10 +50,10 @@ void setup() {
 //_______________________________________________________________________________________________
 
 void loop() {
-    ButtonPad_.Update();
+    Keypad_.Update();
 
     Serial.print("Button = ");
-    Serial.println(ButtonPad_.GetPressedButtonName());
+    Serial.println(Keypad_.GetPressedButtonName());
 
     if (PressureSensor_.Update()) {
         Serial.print("Raw = ");
