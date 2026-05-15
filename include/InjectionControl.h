@@ -43,9 +43,6 @@ class InjectionControl {
     //! \return Stop reason
     StopReason Run();
 
-    //! \brief Stops the injection immediately
-    void Stop();
-
     //! \brief Gets the last stop reason
     //! \return Last stop reason
     StopReason GetStopReason() const;
@@ -74,13 +71,14 @@ class InjectionControl {
     const InjectionConfig& InjectionConfig_;
     const MotorMechanicsConfig& MotorMechanicsConfig_;
 
-    StopReason StopReason_;
-    float LastPressure_bar_;
     uint32_t StepCount_;
+    float LastPressure_bar_;
     uint32_t CurrentPulseWidth_us_;
-    uint32_t TargetPulseWidth_us_;
-    uint32_t MaximumSteps_;
     bool Running_;
+    StopReason StopReason_;
+
+    const uint32_t TargetPulseWidth_us_;
+    const uint32_t MaximumSteps_;
 };
 
 #endif  // INJECTIONCONTROL_H

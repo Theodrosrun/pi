@@ -12,9 +12,9 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include <Arduino.h>
-
 #include "InjectionControl.h"
+
+#include <Arduino.h>
 
 InjectionControl::InjectionControl(StepperMotor& stepperMotor,
                                    PressureSensor& pressureSensor,
@@ -24,47 +24,55 @@ InjectionControl::InjectionControl(StepperMotor& stepperMotor,
       PressureSensor_(pressureSensor),
       InjectionConfig_(injectionConfig),
       MotorMechanicsConfig_(motorMechanicsConfig),
-      StopReason_(StopReason::None),
-      LastPressure_bar_(0.0f),
       StepCount_(0u),
+      LastPressure_bar_(0.0f),
       CurrentPulseWidth_us_(InjectionConfig_.StartPulseWidth_us),
+      Running_(false),
+      StopReason_(StopReason::None),
       TargetPulseWidth_us_(ComputePulseWidth_us()),
-      MaximumSteps_(ComputeMaximumSteps()),
-      Running_(false) {}
+      MaximumSteps_(ComputeMaximumSteps()) {}
 
 //_______________________________________________________________________________________________
 
 InjectionControl::StopReason InjectionControl::Run() {
-    StopReason_ = StopReason::None;
-    LastPressure_bar_ = 0.0f;
+    // Reset state
     StepCount_ = 0u;
+    LastPressure_bar_ = 0.0f;
     CurrentPulseWidth_us_ = InjectionConfig_.StartPulseWidth_us;
     Running_ = true;
+    StopReason_ = StopReason::None;
 
-    StepperMotor_.Enable();
+    // Set motor direction and enable motor
     StepperMotor_.SetDirection(InjectionConfig_.Direction);
+    StepperMotor_.Enable();
 
     while (Running_) {
+        // Check if maximum steps is reached
         if (StepCount_ >= MaximumSteps_) {
             StopReason_ = StopReason::MaximumStepsReached;
             break;
         }
 
+        // Generate step pulse
         StepperMotor_.Step(CurrentPulseWidth_us_);
         ++StepCount_;
 
+        // Update acceleration ramp
         UpdateRamp(TargetPulseWidth_us_);
 
-        if (InjectionConfig_.PressureCheckPeriodSteps != 0u &&
-            (StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u) {
+        // Check pressure at defined intervals
+        if ((InjectionConfig_.PressureCheckPeriodSteps != 0u) &&
+            ((StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u)) {
             if (PressureSensor_.Update()) {
                 LastPressure_bar_ = PressureSensor_.GetPressure_bar();
 
+                // Check if safety pressure is reached
                 if (LastPressure_bar_ >= InjectionConfig_.SafetyPressure_bar) {
                     StopReason_ = StopReason::SafetyPressureReached;
                     break;
                 }
 
+                // Check if target pressure is reached
                 if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
                     StopReason_ = StopReason::TargetPressureReached;
                     break;
@@ -73,17 +81,11 @@ InjectionControl::StopReason InjectionControl::Run() {
         }
     }
 
+    // Disable motor and exit
     StepperMotor_.Disable();
     Running_ = false;
 
     return StopReason_;
-}
-
-//_______________________________________________________________________________________________
-
-void InjectionControl::Stop() {
-    Running_ = false;
-    StepperMotor_.Disable();
 }
 
 //_______________________________________________________________________________________________
