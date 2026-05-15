@@ -43,7 +43,7 @@ InjectionControl::StopReason InjectionControl::Run() {
     StopReason_ = StopReason::None;
 
     // Set motor direction and enable motor
-    StepperMotor_.SetDirection(MotorMechanicsConfig_.Direction);
+    StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
     StepperMotor_.Enable();
 
     while (Running_) {

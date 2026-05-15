@@ -17,8 +17,6 @@
 
 #include <stdint.h>
 
-#include "PAL/StepperMotor.h"
-
 struct MotorMechanicsConfig {
     float ScrewLead_mm_per_rev;
     uint32_t MotorFullSteps_per_rev;
@@ -27,17 +25,14 @@ struct MotorMechanicsConfig {
     uint32_t AccelerationStep_us;
     uint32_t AccelerationPeriodSteps;
     uint32_t PressureCheckPeriodSteps;
-    StepperMotor::Direction Direction;
 };
 
-constexpr MotorMechanicsConfig C_MotorMechanicsConfig = {
-    .ScrewLead_mm_per_rev = 5.0f,
-    .MotorFullSteps_per_rev = 200u,
-    .Microsteps = 4u,
-    .StartPulseWidth_us = 800u,
-    .AccelerationStep_us = 1u,
-    .AccelerationPeriodSteps = 5u,
-    .PressureCheckPeriodSteps = 100000u,
-    .Direction = StepperMotor::Direction::Forward};
+constexpr MotorMechanicsConfig C_MotorMechanicsConfig = {.ScrewLead_mm_per_rev = 5.0f,
+                                                         .MotorFullSteps_per_rev = 200u,
+                                                         .Microsteps = 4u,
+                                                         .StartPulseWidth_us = 800u,
+                                                         .AccelerationStep_us = 1u,
+                                                         .AccelerationPeriodSteps = 5u,
+                                                         .PressureCheckPeriodSteps = 100000u};
 
 #endif  // MOTORMECHANICSCONFIG_H
