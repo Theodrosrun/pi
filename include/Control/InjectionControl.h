@@ -46,17 +46,13 @@ class InjectionControl {
     //! \return Stop reason at the end of the injection
     StopReason Execute();
 
-    //! \brief Gets the last stop reason
-    //! \return Last stop reason
-    StopReason GetStopReason() const;
-
     //! \brief Gets the last measured pressure
     //! \return Last measured pressure in bar
     float GetLastPressure_bar() const;
 
-    //! \brief Gets the number of steps performed during the last injection
-    //! \return Number of motor steps performed
-    uint32_t GetStepCount() const;
+    //! \brief Gets the last stop reason
+    //! \return Last stop reason
+    StopReason GetStopReason() const;
 
    private:
     //! \brief Updates the motor acceleration

@@ -97,20 +97,14 @@ InjectionControl::StopReason InjectionControl::Execute() {
 
 //_______________________________________________________________________________________________
 
-InjectionControl::StopReason InjectionControl::GetStopReason() const {
-    return StopReason_;
-}
-
-//_______________________________________________________________________________________________
-
 float InjectionControl::GetLastPressure_bar() const {
     return LastPressure_bar_;
 }
 
 //_______________________________________________________________________________________________
 
-uint32_t InjectionControl::GetStepCount() const {
-    return StepCount_;
+InjectionControl::StopReason InjectionControl::GetStopReason() const {
+    return StopReason_;
 }
 
 //_______________________________________________________________________________________________
