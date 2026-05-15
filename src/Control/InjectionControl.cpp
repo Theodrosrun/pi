@@ -18,7 +18,7 @@
 
 namespace {
 // Configuration constants
-const uint32_t C_PressureCheckPeriodSteps = 10000u;
+const uint32_t C_PressureCheckPeriodSteps = 100u;  // 31 ms
 }  // namespace
 
 //_______________________________________________________________________________________________
