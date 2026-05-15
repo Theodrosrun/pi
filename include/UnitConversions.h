@@ -18,7 +18,7 @@
 namespace UnitConversions {
 
 constexpr float C_PascalsPerBar = 100000.0f;
-
-}
+constexpr float C_MetersPerMillimeter = 0.001f;
+}  // namespace UnitConversions
 
 #endif  // UNIT_CONVERSIONS_H

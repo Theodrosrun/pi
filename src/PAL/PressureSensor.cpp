@@ -63,8 +63,8 @@ bool PressureSensor::Update(const float syringeDiameter_mm) {
     const int32_t relative = raw - Offset_;
 
     Force_n_ = static_cast<float>(relative) * C_ForcePerCount;
-    Pressure_bar_ =
-        Force_n_ / ComputeAreaSquareMeters(syringeDiameter_mm) / UnitConversions::C_PascalsPerBar;
+    const float pressure_pa = Force_n_ / ComputeArea(syringeDiameter_mm);
+    Pressure_bar_ = pressure_pa / UnitConversions::C_PascalsPerBar;
 
     return true;
 }
@@ -83,8 +83,10 @@ float PressureSensor::GetPressure_bar() const {
 
 //_______________________________________________________________________________________________
 
-float PressureSensor::ComputeAreaSquareMeters(const float syringeDiameter_mm) const {
-    const float diameterMeters = syringeDiameter_mm * 0.001f;
-    const float radiusMeters = diameterMeters * 0.5f;
-    return PI * radiusMeters * radiusMeters;
+float PressureSensor::ComputeArea(const float syringeDiameter_mm) const {
+    const float diameter_m = syringeDiameter_mm * UnitConversions::C_MetersPerMillimeter;
+    const float radius_m = diameter_m * 0.5f;
+    const float area_m2 = PI * radius_m * radius_m;
+
+    return area_m2;
 }

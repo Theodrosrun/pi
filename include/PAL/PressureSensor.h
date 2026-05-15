@@ -49,7 +49,7 @@ class PressureSensor {
     //! \brief Computes the area of the syringe in square meters
     //! \param syringeDiameter_mm Syringe inner diameter in millimeters
     //! \return The area of the syringe in square meters
-    float ComputeAreaSquareMeters(const float syringeDiameter_mm) const;
+    float ComputeArea(const float syringeDiameter_mm) const;
 
    private:
     const uint8_t DataPin_;   //!< The data pin connected to the HX711
