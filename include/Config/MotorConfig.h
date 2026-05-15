@@ -20,8 +20,8 @@
 //! \brief Motor and linear axis mechanics configuration
 struct MotorMechanicsConfig {
     float ScrewLead_mm_per_rev;       //!< Linear travel per motor revolution in millimeters
-    uint32_t MotorFullSteps_per_rev;  //!< Number of full steps per motor revolution
-    uint32_t Microsteps;              //!< Driver microstep setting
+    uint32_t MotorFullSteps_per_rev;  //!< Number of steps per motor revolution
+    uint32_t Microsteps;              //!< Number of microsteps per motor step
 };
 
 //! \brief Motor motion profile configuration
