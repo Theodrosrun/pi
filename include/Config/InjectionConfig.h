@@ -19,28 +19,24 @@
 
 //! \brief Injection configuration parameters
 struct InjectionConfig {
-    // Pressure limits
-    float TargetPressure_bar;
-    float SafetyPressure_bar;
-
-    // Syringe parameters
-    float SyringeVolume_ml;
-    float SyringeStroke_mm;
-    float TargetFlow_ml_s;
+    float TargetPressure_bar;  //!< Target pressure in bar
+    float SafetyPressure_bar;  //!< Safety pressure limit in bar
+    float SyringeVolume_ml;    //!< Syringe volume in milliliters
+    float SyringeStroke_mm;    //!< Syringe piston stroke in millimeters
+    float TargetFlow_ml_s;     //!< Target injection flow in milliliters per second
 };
 
+//! \brief Left coronary injection configuration
 constexpr InjectionConfig C_LeftCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                            .SafetyPressure_bar = 2.0f,
-
                                                            .SyringeVolume_ml = 30.0f,
                                                            .SyringeStroke_mm = 100.0f,
                                                            .TargetFlow_ml_s = 6.0f};
 
+//! \brief Right coronary injection configuration
 constexpr InjectionConfig C_RightCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                             .SafetyPressure_bar = 2.0f,
-
                                                             .SyringeVolume_ml = 30.0f,
                                                             .SyringeStroke_mm = 100.0f,
                                                             .TargetFlow_ml_s = 3.0f};
-
 #endif  // INJECTIONCONFIG_H
