@@ -22,11 +22,18 @@ namespace {
 // Configuration constants
 const uint32_t C_StartupDelay_ms = 1500u;
 const uint32_t C_UnloadDelay_ms = 2000u;
+
 // Calibration and measurement parameters
 const uint8_t C_OffsetSampleCount = 20u;
 const uint8_t C_MeasurementSampleCount = 1u;
-// Sensor and syringe parameters
-const float C_ForcePerCount = 5.331522e-5f;
+
+// Sensor parameters
+
+// Calibration factor obtained with a 5 kg reference mass.
+// The sensor offset was measured without load, then the raw value was measured with 5 kg.
+// The known force is 5 kg * 9.81 m/s² = 49.05 N.
+// C_NewtonsPerCount = 49.05 N / (raw_with_5kg - offset_without_load).
+const float C_NewtonsPerCount = 5.331522e-5f;
 }  // namespace
 
 //_______________________________________________________________________________________________
@@ -62,7 +69,7 @@ bool PressureSensor::Update(const float syringeDiameter_mm) {
     const int32_t raw = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
     const int32_t relative = raw - Offset_;
 
-    Force_n_ = static_cast<float>(relative) * C_ForcePerCount;
+    Force_n_ = static_cast<float>(relative) * C_NewtonsPerCount;
     const float pressure_pa = Force_n_ / ComputeArea(syringeDiameter_mm);
     Pressure_bar_ = pressure_pa / UnitConversions::C_PascalsPerBar;
 
