@@ -30,9 +30,17 @@ const uint8_t C_MeasurementSampleCount = 1u;
 // Sensor parameters
 
 // Calibration factor obtained with a 5 kg reference mass.
-// The sensor offset was measured without load, then the raw value was measured with 5 kg.
-// The known force is 5 kg * 9.81 m/s² = 49.05 N.
-// C_NewtonsPerCount = 49.05 N / (raw_with_5kg - offset_without_load).
+// First, the sensor offset is measured without any load.
+// Then, the raw sensor value is measured with the 5 kg mass applied.
+//
+// The known reference force is:
+//     F = m * g = 5 kg * 9.81 m/s² = 49.05 N
+//
+// The raw variation caused by the 5 kg mass is:
+//     relative_counts = raw with 5kg - offset_without_load
+//
+// Therefore, the conversion factor is:
+//     C_NewtonsPerCount = 49.05 N / relative_counts
 const float C_NewtonsPerCount = 5.331522e-5f;
 }  // namespace
 
