@@ -60,12 +60,6 @@ class StepperMotor {
     void Step(const uint32_t stepCount, const uint32_t pulseWidth_us);
 
    private:
-    //! \brief Writes a command to a pin
-    //! \param pin Output pin to update
-    //! \param active True for an active command, false for idle
-    void WriteCommand(const uint8_t pin, const bool active) const;
-
-   private:
     const uint8_t PulsePin_;      //!< Arduino pin connected to PUL-
     const uint8_t DirectionPin_;  //!< Arduino pin connected to DIR-
     const uint8_t EnablePin_;     //!< Arduino pin connected to ENA-
