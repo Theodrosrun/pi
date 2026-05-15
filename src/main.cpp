@@ -14,14 +14,14 @@
 
 #include <Arduino.h>
 
-#include "InjectionConfig.h"
-#include "InjectionControl.h"
-#include "Keypad.h"
-#include "LCD.h"
-#include "MotorMechanicsConfig.h"
-#include "PinConfig.h"
-#include "PressureSensor.h"
-#include "StepperMotor.h"
+#include "Config/InjectionConfig.h"
+#include "Config/MotorMechanicsConfig.h"
+#include "Config/PinConfig.h"
+#include "Control/InjectionControl.h"
+#include "PAL/Keypad.h"
+#include "PAL/LCD.h"
+#include "PAL/PressureSensor.h"
+#include "PAL/StepperMotor.h"
 
 namespace {
 // Configuration constants

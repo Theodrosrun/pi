@@ -17,10 +17,10 @@
 
 #include <stdint.h>
 
-#include "InjectionConfig.h"
-#include "MotorMechanicsConfig.h"
-#include "PressureSensor.h"
-#include "StepperMotor.h"
+#include "Config/InjectionConfig.h"
+#include "Config/MotorMechanicsConfig.h"
+#include "PAL/PressureSensor.h"
+#include "PAL/StepperMotor.h"
 
 //! \brief Controls saline injection using a stepper motor and pressure feedback
 class InjectionControl {

@@ -12,7 +12,7 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "PressureSensor.h"
+#include "PAL/PressureSensor.h"
 
 #include <Arduino.h>
 

@@ -12,7 +12,7 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "StepperMotor.h"
+#include "PAL/StepperMotor.h"
 
 #include <Arduino.h>
 

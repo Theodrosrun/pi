@@ -12,7 +12,7 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "LCD.h"
+#include "PAL/LCD.h"
 
 #include <Arduino.h>
 

@@ -17,7 +17,7 @@
 
 #include <stdint.h>
 
-#include "StepperMotor.h"
+#include "PAL/StepperMotor.h"
 
 struct MotorMechanicsConfig {
     float ScrewLead_mm_per_rev;

@@ -12,7 +12,7 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "Keypad.h"
+#include "PAL/Keypad.h"
 
 #include <Arduino.h>
 

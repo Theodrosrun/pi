@@ -12,7 +12,7 @@
 //! \author  Theodros Mulugeta
 //_______________________________________________________________________________________________
 
-#include "InjectionControl.h"
+#include "Control/InjectionControl.h"
 
 #include <Arduino.h>
 
