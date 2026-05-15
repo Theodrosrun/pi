@@ -26,7 +26,7 @@ InjectionControl::InjectionControl(StepperMotor& stepperMotor,
       MotorMechanicsConfig_(motorMechanicsConfig),
       StepCount_(0u),
       LastPressure_bar_(0.0f),
-      CurrentPulseWidth_us_(InjectionConfig_.StartPulseWidth_us),
+      CurrentPulseWidth_us_(MotorMechanicsConfig_.StartPulseWidth_us),
       Running_(false),
       StopReason_(StopReason::None),
       TargetPulseWidth_us_(ComputePulseWidth_us()),
@@ -38,12 +38,12 @@ InjectionControl::StopReason InjectionControl::Run() {
     // Reset state
     StepCount_ = 0u;
     LastPressure_bar_ = 0.0f;
-    CurrentPulseWidth_us_ = InjectionConfig_.StartPulseWidth_us;
+    CurrentPulseWidth_us_ = MotorMechanicsConfig_.StartPulseWidth_us;
     Running_ = true;
     StopReason_ = StopReason::None;
 
     // Set motor direction and enable motor
-    StepperMotor_.SetDirection(InjectionConfig_.Direction);
+    StepperMotor_.SetDirection(MotorMechanicsConfig_.Direction);
     StepperMotor_.Enable();
 
     while (Running_) {
@@ -106,16 +106,16 @@ uint32_t InjectionControl::GetStepCount() const {
 //_______________________________________________________________________________________________
 
 void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
-    if (InjectionConfig_.AccelerationPeriodSteps == 0u) {
+    if (MotorMechanicsConfig_.AccelerationPeriodSteps == 0u) {
         return;
     }
 
-    if ((StepCount_ % InjectionConfig_.AccelerationPeriodSteps) != 0u) {
+    if ((StepCount_ % MotorMechanicsConfig_.AccelerationPeriodSteps) != 0u) {
         return;
     }
 
-    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + InjectionConfig_.AccelerationStep_us)) {
-        CurrentPulseWidth_us_ -= InjectionConfig_.AccelerationStep_us;
+    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + MotorMechanicsConfig_.AccelerationStep_us)) {
+        CurrentPulseWidth_us_ -= MotorMechanicsConfig_.AccelerationStep_us;
     } else {
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
@@ -124,8 +124,8 @@ void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
 //_______________________________________________________________________________________________
 
 bool InjectionControl::PressureShouldBeChecked() const {
-    return (InjectionConfig_.PressureCheckPeriodSteps != 0u) &&
-           ((StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u);
+    return (MotorMechanicsConfig_.PressureCheckPeriodSteps != 0u) &&
+           ((StepCount_ % MotorMechanicsConfig_.PressureCheckPeriodSteps) == 0u);
 }
 
 //_______________________________________________________________________________________________
