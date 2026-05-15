@@ -60,8 +60,8 @@ bool StepperMotor::IsEnabled() const {
 //_______________________________________________________________________________________________
 
 void StepperMotor::SetDirection(const Direction direction) {
-    Direction_ = direction;
     digitalWrite(DirectionPin_, ((direction == Direction::Forward) ? LOW : HIGH));
+    Direction_ = direction;
 }
 
 //_______________________________________________________________________________________________
