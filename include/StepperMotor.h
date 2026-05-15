@@ -57,7 +57,7 @@ class StepperMotor {
     //! \brief Generates multiple step pulses
     //! \param stepCount Number of steps to generate
     //! \param pulseWidth_us Pulse active duration in microseconds
-    void Step(const uint32_t stepCount, const uint32_t pulseWidth_us);
+    void Steps(const uint32_t stepCount, const uint32_t pulseWidth_us);
 
    private:
     const uint8_t PulsePin_;      //!< Arduino pin connected to PUL-

@@ -85,7 +85,7 @@ void StepperMotor::Step(const uint32_t pulseWidth_us) {
 
 //_______________________________________________________________________________________________
 
-void StepperMotor::Step(const uint32_t stepCount, const uint32_t pulseWidth_us) {
+void StepperMotor::Steps(const uint32_t stepCount, const uint32_t pulseWidth_us) {
     for (uint32_t stepIndex = 0; stepIndex < stepCount; ++stepIndex) {
         Step(pulseWidth_us);
     }

@@ -64,7 +64,7 @@ void loop() {
     if (Keypad_.GetPressedButton() == Keypad::Button::Right) {
         StepperMotor_.Enable();
         StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
-        StepperMotor_.Step(1600u, 1000u);
+        StepperMotor_.Steps(1600u, 1000u);
         StepperMotor_.Disable();
     }
 
