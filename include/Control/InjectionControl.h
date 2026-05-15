@@ -59,9 +59,9 @@ class InjectionControl {
     uint32_t GetStepCount() const;
 
    private:
-    //! \brief Updates the motor acceleration ramp
+    //! \brief Updates the motor acceleration
     //! \param targetPulseWidth_us Target pulse width in microseconds
-    void UpdateRamp(const uint32_t targetPulseWidth_us);
+    void UpdateMotorAcceleration(const uint32_t targetPulseWidth_us);
 
     //! \brief Indicates whether pressure should be checked at the current step
     //! \return True if the configured pressure check period has been reached

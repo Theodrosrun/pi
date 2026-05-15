@@ -67,7 +67,7 @@ InjectionControl::StopReason InjectionControl::Execute() {
         ++StepCount_;
 
         // Update acceleration ramp
-        UpdateRamp(TargetPulseWidth_us_);
+        UpdateMotorAcceleration(TargetPulseWidth_us_);
 
         // Check pressure at defined intervals
         if (PressureShouldBeChecked() &&
@@ -115,18 +115,23 @@ uint32_t InjectionControl::GetStepCount() const {
 
 //_______________________________________________________________________________________________
 
-void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
+void InjectionControl::UpdateMotorAcceleration(const uint32_t targetPulseWidth_us) {
+    // Disable acceleration ramp if no update period is configured.
     if (MotorMotionConfig_.AccelerationPeriodSteps == 0u) {
         return;
     }
 
+    // Update the ramp only every AccelerationPeriodSteps commanded steps.
     if ((StepCount_ % MotorMotionConfig_.AccelerationPeriodSteps) != 0u) {
         return;
     }
 
+    // Decrease the pulse width progressively to increase the motor speed.
+    // A smaller pulse width means a higher step frequency.
     if (CurrentPulseWidth_us_ > (targetPulseWidth_us + MotorMotionConfig_.AccelerationStep_us)) {
         CurrentPulseWidth_us_ -= MotorMotionConfig_.AccelerationStep_us;
     } else {
+        // Clamp the pulse width to the target value to avoid going faster than requested.
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
 }
