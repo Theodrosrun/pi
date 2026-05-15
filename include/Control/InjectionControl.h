@@ -25,23 +25,25 @@
 //! \brief Controls saline injection using a stepper motor and pressure feedback
 class InjectionControl {
    public:
-    //! \brief Injection stop reason
+    //! \brief Injection stop reason identifiers
     enum class StopReason : uint8_t {
-        None,
-        TargetPressureReached,
-        SafetyPressureReached,
-        MaximumStepsReached
+        None,                   //!< No stop reason defined
+        TargetPressureReached,  //!< Target pressure has been reached
+        SafetyPressureReached,  //!< Safety pressure limit has been reached
+        MaximumStepsReached     //!< Maximum allowed number of steps has been reached
     };
 
     //! \brief Constructor
-    InjectionControl(StepperMotor& stepperMotor,
-                     PressureSensor& pressureSensor,
-                     const InjectionConfig& injectionConfig,
-                     const MotorMechanicsConfig& motorMechanicsConfig,
-                     const MotorMotionConfig& motorMotionConfig);
+    InjectionControl(
+        StepperMotor& stepperMotor,                        //!< Stepper motor instance
+        PressureSensor& pressureSensor,                    //!< Pressure sensor instance
+        const InjectionConfig& injectionConfig,            //!< Injection configuration
+        const MotorMechanicsConfig& motorMechanicsConfig,  //!< Motor mechanics configuration
+        const MotorMotionConfig& motorMotionConfig         //!< Motor motion profile configuration
+    );
 
     //! \brief Runs one complete injection sequence
-    //! \return Stop reason
+    //! \return Stop reason at the end of the injection
     StopReason Run();
 
     //! \brief Gets the last stop reason
@@ -49,42 +51,44 @@ class InjectionControl {
     StopReason GetStopReason() const;
 
     //! \brief Gets the last measured pressure
-    //! \return Last pressure in bar
+    //! \return Last measured pressure in bar
     float GetLastPressure_bar() const;
 
     //! \brief Gets the number of steps performed during the last injection
-    //! \return Step count
+    //! \return Number of motor steps performed
     uint32_t GetStepCount() const;
 
    private:
-    //! \brief Updates the acceleration ramp
-    //! \param targetPulseWidth_us Target pulse width in microseconds for the current step
+    //! \brief Updates the motor acceleration ramp
+    //! \param targetPulseWidth_us Target pulse width in microseconds
     void UpdateRamp(const uint32_t targetPulseWidth_us);
 
     //! \brief Indicates whether pressure should be checked at the current step
-    //! \return True when the configured check period is reached
+    //! \return True if the configured pressure check period has been reached
     bool PressureShouldBeChecked() const;
 
-    //! \brief Computes the pulse width for the current step based on the motion profile
+    //! \brief Computes the target pulse width from syringe, flow and motor parameters
+    //! \return Target pulse width in microseconds
     uint32_t ComputePulseWidth_us() const;
 
+    //! \brief Computes the maximum number of steps from syringe stroke and motor mechanics
+    //! \return Maximum number of motor steps for the configured syringe stroke
     uint32_t ComputeMaximumSteps() const;
 
    private:
-    StepperMotor& StepperMotor_;
-    PressureSensor& PressureSensor_;
-    const InjectionConfig& InjectionConfig_;
-    const MotorMechanicsConfig& MotorMechanicsConfig_;
-    const MotorMotionConfig& MotorMotionConfig_;
+    StepperMotor& StepperMotor_;                        //!< Stepper motor instance
+    PressureSensor& PressureSensor_;                    //!< Pressure sensor instance
+    const InjectionConfig& InjectionConfig_;            //!< Injection configuration
+    const MotorMechanicsConfig& MotorMechanicsConfig_;  //!< Motor mechanics configuration
+    const MotorMotionConfig& MotorMotionConfig_;        //!< Motor motion profile configuration
 
-    uint32_t StepCount_;
-    float LastPressure_bar_;
-    uint32_t CurrentPulseWidth_us_;
-    bool Running_;
-    StopReason StopReason_;
-
-    const uint32_t TargetPulseWidth_us_;
-    const uint32_t MaximumSteps_;
+    uint32_t StepCount_;             //!< Number of steps performed during the current injection
+    float LastPressure_bar_;         //!< Last measured pressure in bar
+    uint32_t CurrentPulseWidth_us_;  //!< Current pulse width in microseconds
+    bool Running_;                   //!< Injection running state
+    StopReason StopReason_;          //!< Last stop reason
+    const uint32_t TargetPulseWidth_us_;  //!< Computed target pulse width in microseconds
+    const uint32_t MaximumSteps_;         //!< Computed maximum number of motor steps
 };
 
 #endif  // INJECTIONCONTROL_H
