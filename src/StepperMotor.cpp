@@ -32,11 +32,8 @@ void StepperMotor::Init() {
     pinMode(DirectionPin_, OUTPUT);
     pinMode(PulsePin_, OUTPUT);
 
-    // ENA enables the driver when HIGH and disables it when LOW in this setup.
     Disable();
-    // DIR is a level signal: LOW and HIGH select opposite directions.
     SetDirection(Direction_);
-    // PUL is active-low: LOW generates a step pulse, HIGH is idle.
     digitalWrite(PulsePin_, HIGH);
 }
 
