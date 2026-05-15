@@ -77,9 +77,13 @@ void StepperMotor::Step(const uint32_t pulseWidth_us) {
         return;
     }
 
+    // Start the active-low pulse
     digitalWrite(PulsePin_, LOW);
+    // Keep the pulse active long enough for the driver
     delayMicroseconds(pulseWidth_us);
+    // End the pulse and return to idle state
     digitalWrite(PulsePin_, HIGH);
+    // Wait before sending the next pulse
     delayMicroseconds(pulseWidth_us);
 }
 
