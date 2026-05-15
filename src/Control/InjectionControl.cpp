@@ -140,25 +140,26 @@ bool InjectionControl::PressureShouldBeChecked() const {
 //_______________________________________________________________________________________________
 
 uint32_t InjectionControl::ComputePulseWidth_us() const {
-    // Volume injected for 1 mm of piston travel.
+    // Injected volume for 1 mm of piston travel.
     const float ml_per_mm = InjectionConfig_.SyringeVolume_ml / InjectionConfig_.SyringeStroke_mm;
 
-    // Required piston speed to reach the target flow.
+    // Required piston speed to reach the target flow rate.
     const float targetSpeed_mm_s = InjectionConfig_.TargetFlow_ml_s / ml_per_mm;
 
-    // Number of input pulses required for one motor revolution.
-    const float pulses_per_rev = static_cast<float>(MotorMechanicsConfig_.MotorFullSteps_per_rev *
-                                                    MotorMechanicsConfig_.Microsteps);
+    // Number of commanded steps required for one motor revolution.
+    const float steps_per_rev = static_cast<float>(MotorMechanicsConfig_.MotorFullSteps_per_rev *
+                                                   MotorMechanicsConfig_.Microsteps);
 
-    // Number of input pulses required for 1 mm of linear travel.
-    const float pulses_per_mm = pulses_per_rev / MotorMechanicsConfig_.ScrewLead_mm_per_rev;
+    // Number of commanded steps required for 1 mm of linear travel.
+    const float steps_per_mm = steps_per_rev / MotorMechanicsConfig_.ScrewLead_mm_per_rev;
 
-    // Required pulse frequency to reach the target piston speed.
-    const float pulses_per_s = targetSpeed_mm_s * pulses_per_mm;
+    // Required commanded step frequency to reach the target piston speed.
+    const float steps_per_s = targetSpeed_mm_s * steps_per_mm;
 
-    // Step() uses two delays per pulse: active time and idle time.
-    // Therefore, pulseWidth is half of the full pulse period.
-    const float pulseWidth_us = 1000000.0f / (2.0f * pulses_per_s);
+    // Step() generates one commanded step using two delays:
+    // one active delay and one idle delay.
+    // Therefore, pulseWidth_us is half of the full commanded-step period.
+    const float pulseWidth_us = 1000000.0f / (2.0f * steps_per_s);
 
     return static_cast<uint32_t>(pulseWidth_us);
 }
