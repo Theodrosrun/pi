@@ -30,9 +30,6 @@ struct InjectionConfig {
     float SyringeStroke_mm;
     float TargetFlow_ml_s;
 
-    // Safety
-    uint32_t MaximumSteps;
-
     // Motion profile
     uint32_t StartPulseWidth_us;
     uint32_t AccelerationStep_us;
@@ -49,8 +46,6 @@ constexpr InjectionConfig C_DefaultInjectionConfig = {
     .SyringeVolume_ml = 30.0f,
     .SyringeStroke_mm = 100.0f,
     .TargetFlow_ml_s = 6.0f,
-
-    .MaximumSteps = 20000u,
 
     .StartPulseWidth_us = 800u,
     .AccelerationStep_us = 1u,
