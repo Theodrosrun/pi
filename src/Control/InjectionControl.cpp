@@ -45,16 +45,13 @@ InjectionControl::InjectionControl(StepperMotor& stepperMotor,
 
 InjectionControl::State InjectionControl::Execute() {
     // Reset state
-    StepCount_ = 0u;
-    LastPressure_bar_ = 0.0f;
-    CurrentPulseWidth_us_ = MotorMotionConfig_.StartPulseWidth_us;
-    Running_ = true;
-    State_ = State::None;
+    ResetState();
 
     // Set motor direction and enable motor
     StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
     StepperMotor_.Enable();
 
+    // Main control loop
     while (Running_) {
         // Check if maximum steps is reached
         if (StepCount_ >= MaximumSteps_) {
@@ -93,6 +90,16 @@ InjectionControl::State InjectionControl::Execute() {
     Running_ = false;
 
     return State_;
+}
+
+//_______________________________________________________________________________________________
+
+void InjectionControl::ResetState() {
+    StepCount_ = 0u;
+    LastPressure_bar_ = 0.0f;
+    CurrentPulseWidth_us_ = MotorMotionConfig_.StartPulseWidth_us;
+    Running_ = true;
+    State_ = State::None;
 }
 
 //_______________________________________________________________________________________________

@@ -55,6 +55,9 @@ class InjectionControl {
     State GetState() const;
 
    private:
+    //! \brief Resets the injection runtime state before a new execution
+    void ResetState();
+
     //! \brief Updates the motor acceleration
     //! \param targetPulseWidth_us Target pulse width in microseconds
     void UpdateMotorAcceleration(const uint32_t targetPulseWidth_us);
