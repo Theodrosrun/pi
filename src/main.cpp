@@ -58,6 +58,15 @@ void setup() {
 void loop() {
     Keypad_.Update();
 
+    if (Keypad_.GetPressedButton() == Keypad::Button::Left) {
+        LCD_.Display("Injection", "in progress...");
+        StepperMotor_.Enable();
+        StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
+        StepperMotor_.Steps(1600u, 1000u);
+        StepperMotor_.Disable();
+        LCD_.Display("Injection", "completed");
+    }
+
     if (Keypad_.GetPressedButton() == Keypad::Button::Right) {
         LCD_.Display("Injection", "in progress...");
         StepperMotor_.Enable();
