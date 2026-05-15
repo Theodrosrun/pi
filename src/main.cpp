@@ -25,8 +25,9 @@
 
 namespace {
 // Configuration constants
-const uint32_t C_SerialBaudRate = 9600u;  //!< Serial baud rate
-const uint32_t C_LoopDelay_ms = 10u;      //!< Loop delay in milliseconds
+const uint32_t C_SerialBaudRate = 9600u;          //!< Serial baud rate
+const uint32_t C_LoopDelay_ms = 10u;              //!< Loop delay in milliseconds
+const uint32_t C_ManualMovePulseWidth_us = 500u;  //!< Manual move pulse width in microseconds
 
 // Peripheral instances
 Keypad Keypad_(KEYPAD_PIN);  //!< Keypad
@@ -58,6 +59,28 @@ InjectionControl RightCoronaryInjectionControl_(
     C_RightCoronaryInjectionConfig,
     C_MotorMechanicsConfig,
     C_MotorMotionConfig);  //!< Right coronary injection control
+
+// Helper functions
+void ExecuteInjection(InjectionControl& injectionControl, const char* line) {
+    LCD_.Display(line, "in progress...");
+    injectionControl.Execute();
+}
+
+void MoveMotorManually(const StepperMotor::Direction direction,
+                       const Keypad::Button button,
+                       const char* line) {
+    LCD_.Display("Manual move", line);
+
+    StepperMotor_.Enable();
+    StepperMotor_.SetDirection(direction);
+
+    while (Keypad_.GetPressedButton() == button) {
+        StepperMotor_.Step(C_ManualMovePulseWidth_us);
+        Keypad_.Update();
+    }
+
+    StepperMotor_.Disable();
+}
 }  // namespace
 
 //_______________________________________________________________________________________________
@@ -80,95 +103,21 @@ void loop() {
     Keypad_.Update();
 
     switch (Keypad_.GetPressedButton()) {
-        case Keypad::Button::Left: {
-            LCD_.Display("Left coronary", "in progress...");
-
-            const InjectionControl::State state = LeftCoronaryInjectionControl_.Execute();
-
-            switch (state) {
-                case InjectionControl::State::TargetPressureReached:
-                    LCD_.Display(
-                        "Target reached",
-                        String(LeftCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
-                    break;
-
-                case InjectionControl::State::SafetyPressureReached:
-                    LCD_.Display(
-                        "Safety stop",
-                        String(LeftCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
-                    break;
-
-                case InjectionControl::State::MaximumStepsReached:
-                    LCD_.Display("Safety stop", "Max steps");
-                    break;
-
-                default:
-                    LCD_.Display("Injection", "stopped");
-                    break;
-            }
-
+        case Keypad::Button::Left:
+            ExecuteInjection(LeftCoronaryInjectionControl_, "Left coronary");
             break;
-        }
 
-        case Keypad::Button::Right: {
-            LCD_.Display("Right coronary", "in progress...");
-
-            const InjectionControl::State state = RightCoronaryInjectionControl_.Execute();
-
-            switch (state) {
-                case InjectionControl::State::TargetPressureReached:
-                    LCD_.Display(
-                        "Target reached",
-                        String(RightCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
-                    break;
-
-                case InjectionControl::State::SafetyPressureReached:
-                    LCD_.Display(
-                        "Safety stop",
-                        String(RightCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
-                    break;
-
-                case InjectionControl::State::MaximumStepsReached:
-                    LCD_.Display("Safety stop", "Max steps");
-                    break;
-
-                default:
-                    LCD_.Display("Injection", "stopped");
-                    break;
-            }
-
+        case Keypad::Button::Right:
+            ExecuteInjection(RightCoronaryInjectionControl_, "Right coronary");
             break;
-        }
 
-        case Keypad::Button::Up: {
-            LCD_.Display("Manual move", "Forward");
-
-            StepperMotor_.Enable();
-            StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
-
-            while (Keypad_.GetPressedButton() == Keypad::Button::Up) {
-                StepperMotor_.Step(500u);
-                Keypad_.Update();
-            }
-
-            StepperMotor_.Disable();
+        case Keypad::Button::Up:
+            MoveMotorManually(StepperMotor::Direction::Forward, Keypad::Button::Up, "Forward");
             break;
-        }
 
-        case Keypad::Button::Down: {
-            LCD_.Display("Manual move", "Reverse");
-
-            StepperMotor_.Enable();
-            StepperMotor_.SetDirection(StepperMotor::Direction::Reverse);
-
-            while (Keypad_.GetPressedButton() == Keypad::Button::Down) {
-                StepperMotor_.Step(500u);
-                Keypad_.Update();
-            }
-
-            StepperMotor_.Disable();
+        case Keypad::Button::Down:
+            MoveMotorManually(StepperMotor::Direction::Reverse, Keypad::Button::Down, "Reverse");
             break;
-        }
 
         default:
             break;
