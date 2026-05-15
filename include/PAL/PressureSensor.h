@@ -33,8 +33,9 @@ class PressureSensor {
     void Tare();
 
     //! \brief Updates the sensor readings
+    //! \param syringeDiameter_mm Syringe inner diameter in millimeters
     //! \return True if the sensor is ready and the update was successful, false otherwise
-    bool Update();
+    bool Update(const float syringeDiameter_mm);
 
     //! \brief Gets the computed force in [N]
     //! \return The computed force in [N]
@@ -46,8 +47,9 @@ class PressureSensor {
 
    private:
     //! \brief Computes the area of the syringe in square meters
+    //! \param syringeDiameter_mm Syringe inner diameter in millimeters
     //! \return The area of the syringe in square meters
-    float ComputeAreaSquareMeters() const;
+    float ComputeAreaSquareMeters(const float syringeDiameter_mm) const;
 
    private:
     const uint8_t DataPin_;   //!< The data pin connected to the HX711

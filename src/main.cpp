@@ -174,7 +174,7 @@ void loop() {
             break;
     }
 
-    if (PressureSensor_.Update()) {
+    if (PressureSensor_.Update(C_LeftCoronaryInjectionConfig.SyringeDiameter_mm)) {
         LCD_.Display("Pression:", String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     }
 

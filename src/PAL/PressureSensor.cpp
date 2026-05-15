@@ -27,7 +27,6 @@ const uint8_t C_OffsetSampleCount = 20u;
 const uint8_t C_MeasurementSampleCount = 1u;
 // Sensor and syringe parameters
 const float C_ForcePerCount = 5.331522e-5f;
-const float C_SyringeDiameterMeters = 0.010f;
 }  // namespace
 
 //_______________________________________________________________________________________________
@@ -55,7 +54,7 @@ void PressureSensor::Tare() {
 }
 //_______________________________________________________________________________________________
 
-bool PressureSensor::Update() {
+bool PressureSensor::Update(const float syringeDiameter_mm) {
     if (!Scale_.is_ready()) {
         return false;
     }
@@ -64,7 +63,8 @@ bool PressureSensor::Update() {
     const int32_t relative = raw - Offset_;
 
     Force_n_ = static_cast<float>(relative) * C_ForcePerCount;
-    Pressure_bar_ = Force_n_ / ComputeAreaSquareMeters() / UnitConversions::C_PascalsPerBar;
+    Pressure_bar_ =
+        Force_n_ / ComputeAreaSquareMeters(syringeDiameter_mm) / UnitConversions::C_PascalsPerBar;
 
     return true;
 }
@@ -83,7 +83,8 @@ float PressureSensor::GetPressure_bar() const {
 
 //_______________________________________________________________________________________________
 
-float PressureSensor::ComputeAreaSquareMeters() const {
-    const float radiusMeters = C_SyringeDiameterMeters * 0.5f;
+float PressureSensor::ComputeAreaSquareMeters(const float syringeDiameter_mm) const {
+    const float diameterMeters = syringeDiameter_mm * 0.001f;
+    const float radiusMeters = diameterMeters * 0.5f;
     return PI * radiusMeters * radiusMeters;
 }
