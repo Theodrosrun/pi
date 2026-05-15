@@ -37,19 +37,19 @@ InjectionControl::InjectionControl(StepperMotor& stepperMotor,
       LastPressure_bar_(0.0f),
       CurrentPulseWidth_us_(MotorMotionConfig_.StartPulseWidth_us),
       Running_(false),
-      StopReason_(StopReason::None),
+      State_(State::None),
       TargetPulseWidth_us_(ComputePulseWidth_us()),
       MaximumSteps_(ComputeMaximumSteps()) {}
 
 //_______________________________________________________________________________________________
 
-InjectionControl::StopReason InjectionControl::Execute() {
+InjectionControl::State InjectionControl::Execute() {
     // Reset state
     StepCount_ = 0u;
     LastPressure_bar_ = 0.0f;
     CurrentPulseWidth_us_ = MotorMotionConfig_.StartPulseWidth_us;
     Running_ = true;
-    StopReason_ = StopReason::None;
+    State_ = State::None;
 
     // Set motor direction and enable motor
     StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
@@ -58,7 +58,7 @@ InjectionControl::StopReason InjectionControl::Execute() {
     while (Running_) {
         // Check if maximum steps is reached
         if (StepCount_ >= MaximumSteps_) {
-            StopReason_ = StopReason::MaximumStepsReached;
+            State_ = State::MaximumStepsReached;
             break;
         }
 
@@ -76,13 +76,13 @@ InjectionControl::StopReason InjectionControl::Execute() {
 
             // Check if safety pressure is reached
             if (LastPressure_bar_ >= InjectionConfig_.SafetyPressure_bar) {
-                StopReason_ = StopReason::SafetyPressureReached;
+                State_ = State::SafetyPressureReached;
                 break;
             }
 
             // Check if target pressure is reached
             if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
-                StopReason_ = StopReason::TargetPressureReached;
+                State_ = State::TargetPressureReached;
                 break;
             }
         }
@@ -92,7 +92,7 @@ InjectionControl::StopReason InjectionControl::Execute() {
     StepperMotor_.Disable();
     Running_ = false;
 
-    return StopReason_;
+    return State_;
 }
 
 //_______________________________________________________________________________________________
@@ -103,8 +103,8 @@ float InjectionControl::GetLastPressure_bar() const {
 
 //_______________________________________________________________________________________________
 
-InjectionControl::StopReason InjectionControl::GetStopReason() const {
-    return StopReason_;
+InjectionControl::State InjectionControl::GetState() const {
+    return State_;
 }
 
 //_______________________________________________________________________________________________

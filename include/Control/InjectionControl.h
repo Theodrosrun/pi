@@ -25,9 +25,9 @@
 //! \brief Controls saline injection using a stepper motor and pressure feedback
 class InjectionControl {
    public:
-    //! \brief Injection stop reason identifiers
-    enum class StopReason : uint8_t {
-        None,                   //!< No stop reason defined
+    //! \brief Injection state identifiers
+    enum class State : uint8_t {
+        None,                   //!< No state defined
         TargetPressureReached,  //!< Target pressure has been reached
         SafetyPressureReached,  //!< Safety pressure limit has been reached
         MaximumStepsReached     //!< Maximum allowed number of steps has been reached
@@ -43,16 +43,16 @@ class InjectionControl {
     );
 
     //! \brief Executes one complete injection sequence
-    //! \return Stop reason at the end of the injection
-    StopReason Execute();
+    //! \return State at the end of the injection
+    State Execute();
 
     //! \brief Gets the last measured pressure
     //! \return Last measured pressure in bar
     float GetLastPressure_bar() const;
 
-    //! \brief Gets the last stop reason
-    //! \return Last stop reason
-    StopReason GetStopReason() const;
+    //! \brief Gets the last injection state
+    //! \return Last injection state
+    State GetState() const;
 
    private:
     //! \brief Updates the motor acceleration
@@ -82,7 +82,7 @@ class InjectionControl {
     float LastPressure_bar_;         //!< Last measured pressure in bar
     uint32_t CurrentPulseWidth_us_;  //!< Current pulse width in microseconds
     bool Running_;                   //!< Injection running state
-    StopReason StopReason_;          //!< Last stop reason
+    State State_;                    //!< Last injection state
     const uint32_t TargetPulseWidth_us_;  //!< Computed target pulse width in microseconds
     const uint32_t MaximumSteps_;         //!< Computed maximum number of motor steps
 };

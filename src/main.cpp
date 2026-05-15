@@ -83,22 +83,22 @@ void loop() {
         case Keypad::Button::Left: {
             LCD_.Display("Left coronary", "in progress...");
 
-            const InjectionControl::StopReason stopReason = LeftCoronaryInjectionControl_.Execute();
+            const InjectionControl::State state = LeftCoronaryInjectionControl_.Execute();
 
-            switch (stopReason) {
-                case InjectionControl::StopReason::TargetPressureReached:
+            switch (state) {
+                case InjectionControl::State::TargetPressureReached:
                     LCD_.Display(
                         "Target reached",
                         String(LeftCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
                     break;
 
-                case InjectionControl::StopReason::SafetyPressureReached:
+                case InjectionControl::State::SafetyPressureReached:
                     LCD_.Display(
                         "Safety stop",
                         String(LeftCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
                     break;
 
-                case InjectionControl::StopReason::MaximumStepsReached:
+                case InjectionControl::State::MaximumStepsReached:
                     LCD_.Display("Safety stop", "Max steps");
                     break;
 
@@ -113,23 +113,22 @@ void loop() {
         case Keypad::Button::Right: {
             LCD_.Display("Right coronary", "in progress...");
 
-            const InjectionControl::StopReason stopReason =
-                RightCoronaryInjectionControl_.Execute();
+            const InjectionControl::State state = RightCoronaryInjectionControl_.Execute();
 
-            switch (stopReason) {
-                case InjectionControl::StopReason::TargetPressureReached:
+            switch (state) {
+                case InjectionControl::State::TargetPressureReached:
                     LCD_.Display(
                         "Target reached",
                         String(RightCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
                     break;
 
-                case InjectionControl::StopReason::SafetyPressureReached:
+                case InjectionControl::State::SafetyPressureReached:
                     LCD_.Display(
                         "Safety stop",
                         String(RightCoronaryInjectionControl_.GetLastPressure_bar(), 2) + " bar");
                     break;
 
-                case InjectionControl::StopReason::MaximumStepsReached:
+                case InjectionControl::State::MaximumStepsReached:
                     LCD_.Display("Safety stop", "Max steps");
                     break;
 
