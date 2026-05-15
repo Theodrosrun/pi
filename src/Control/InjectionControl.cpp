@@ -126,12 +126,13 @@ void InjectionControl::UpdateMotorAcceleration(const uint32_t targetPulseWidth_u
         return;
     }
 
-    // Decrease the pulse width progressively to increase the motor speed.
-    // A smaller pulse width means a higher step frequency.
+    // Decrease the pulse width progressively to increase the motor speed, smaller pulse width means
+    // a higher step frequency.
     if (CurrentPulseWidth_us_ > (targetPulseWidth_us + MotorMotionConfig_.AccelerationStep_us)) {
         CurrentPulseWidth_us_ -= MotorMotionConfig_.AccelerationStep_us;
-    } else {
-        // Clamp the pulse width to the target value to avoid going faster than requested.
+    }
+    // Clamp the pulse width to the target value to avoid going faster than requested.
+    else {
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
 }
