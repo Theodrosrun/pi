@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 #include "Config/InjectionConfig.h"
-#include "Config/MotorMechanicsConfig.h"
+#include "Config/MotorConfig.h"
 #include "PAL/PressureSensor.h"
 #include "PAL/StepperMotor.h"
 
@@ -37,7 +37,8 @@ class InjectionControl {
     InjectionControl(StepperMotor& stepperMotor,
                      PressureSensor& pressureSensor,
                      const InjectionConfig& injectionConfig,
-                     const MotorMechanicsConfig& motorMechanicsConfig);
+                     const MotorMechanicsConfig& motorMechanicsConfig,
+                     const MotorMotionConfig& motorMotionConfig);
 
     //! \brief Runs one complete injection sequence
     //! \return Stop reason
@@ -74,6 +75,7 @@ class InjectionControl {
     PressureSensor& PressureSensor_;
     const InjectionConfig& InjectionConfig_;
     const MotorMechanicsConfig& MotorMechanicsConfig_;
+    const MotorMotionConfig& MotorMotionConfig_;
 
     uint32_t StepCount_;
     float LastPressure_bar_;

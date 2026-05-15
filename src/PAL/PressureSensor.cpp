@@ -30,6 +30,8 @@ const float C_ForcePerCount = 5.331522e-5f;
 const float C_SyringeDiameterMeters = 0.010f;
 }  // namespace
 
+//_______________________________________________________________________________________________
+
 PressureSensor::PressureSensor(const uint8_t dataPin, const uint8_t clockPin)
     : DataPin_(dataPin),
       ClockPin_(clockPin),

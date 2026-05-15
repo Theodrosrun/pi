@@ -15,7 +15,7 @@
 #include <Arduino.h>
 
 #include "Config/InjectionConfig.h"
-#include "Config/MotorMechanicsConfig.h"
+#include "Config/MotorConfig.h"
 #include "Config/PinConfig.h"
 #include "Control/InjectionControl.h"
 #include "PAL/Keypad.h"
@@ -49,13 +49,15 @@ InjectionControl LeftCoronaryInjectionControl_(
     StepperMotor_,
     PressureSensor_,
     C_LeftCoronaryInjectionConfig,
-    C_MotorMechanicsConfig);  //!< Left coronary injection control
+    C_MotorMechanicsConfig,
+    C_MotorMotionConfig);  //!< Left coronary injection control
 
 InjectionControl RightCoronaryInjectionControl_(
     StepperMotor_,
     PressureSensor_,
     C_RightCoronaryInjectionConfig,
-    C_MotorMechanicsConfig);  //!< Right coronary injection control
+    C_MotorMechanicsConfig,
+    C_MotorMotionConfig);  //!< Right coronary injection control
 }  // namespace
 
 //_______________________________________________________________________________________________

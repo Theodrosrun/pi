@@ -16,17 +16,26 @@
 
 #include <Arduino.h>
 
+namespace {
+// Configuration constants
+const uint32_t C_PressureCheckPeriodSteps = 10000u;
+}  // namespace
+
+//_______________________________________________________________________________________________
+
 InjectionControl::InjectionControl(StepperMotor& stepperMotor,
                                    PressureSensor& pressureSensor,
                                    const InjectionConfig& injectionConfig,
-                                   const MotorMechanicsConfig& motorMechanicsConfig)
+                                   const MotorMechanicsConfig& motorMechanicsConfig,
+                                   const MotorMotionConfig& motorMotionConfig)
     : StepperMotor_(stepperMotor),
       PressureSensor_(pressureSensor),
       InjectionConfig_(injectionConfig),
       MotorMechanicsConfig_(motorMechanicsConfig),
+      MotorMotionConfig_(motorMotionConfig),
       StepCount_(0u),
       LastPressure_bar_(0.0f),
-      CurrentPulseWidth_us_(MotorMechanicsConfig_.StartPulseWidth_us),
+      CurrentPulseWidth_us_(MotorMotionConfig_.StartPulseWidth_us),
       Running_(false),
       StopReason_(StopReason::None),
       TargetPulseWidth_us_(ComputePulseWidth_us()),
@@ -38,7 +47,7 @@ InjectionControl::StopReason InjectionControl::Run() {
     // Reset state
     StepCount_ = 0u;
     LastPressure_bar_ = 0.0f;
-    CurrentPulseWidth_us_ = MotorMechanicsConfig_.StartPulseWidth_us;
+    CurrentPulseWidth_us_ = MotorMotionConfig_.StartPulseWidth_us;
     Running_ = true;
     StopReason_ = StopReason::None;
 
@@ -106,16 +115,16 @@ uint32_t InjectionControl::GetStepCount() const {
 //_______________________________________________________________________________________________
 
 void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
-    if (MotorMechanicsConfig_.AccelerationPeriodSteps == 0u) {
+    if (MotorMotionConfig_.AccelerationPeriodSteps == 0u) {
         return;
     }
 
-    if ((StepCount_ % MotorMechanicsConfig_.AccelerationPeriodSteps) != 0u) {
+    if ((StepCount_ % MotorMotionConfig_.AccelerationPeriodSteps) != 0u) {
         return;
     }
 
-    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + MotorMechanicsConfig_.AccelerationStep_us)) {
-        CurrentPulseWidth_us_ -= MotorMechanicsConfig_.AccelerationStep_us;
+    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + MotorMotionConfig_.AccelerationStep_us)) {
+        CurrentPulseWidth_us_ -= MotorMotionConfig_.AccelerationStep_us;
     } else {
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
@@ -124,8 +133,7 @@ void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
 //_______________________________________________________________________________________________
 
 bool InjectionControl::PressureShouldBeChecked() const {
-    return (MotorMechanicsConfig_.PressureCheckPeriodSteps != 0u) &&
-           ((StepCount_ % MotorMechanicsConfig_.PressureCheckPeriodSteps) == 0u);
+    return (C_PressureCheckPeriodSteps != 0u) && ((StepCount_ % C_PressureCheckPeriodSteps) == 0u);
 }
 
 //_______________________________________________________________________________________________
