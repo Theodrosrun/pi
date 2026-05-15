@@ -58,9 +58,6 @@ void setup() {
 void loop() {
     Keypad_.Update();
 
-    Serial.print("Button = ");
-    Serial.println(Keypad_.GetPressedButtonName());
-
     if (Keypad_.GetPressedButton() == Keypad::Button::Right) {
         StepperMotor_.Enable();
         StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
@@ -69,20 +66,6 @@ void loop() {
     }
 
     if (PressureSensor_.Update()) {
-        Serial.print("Raw = ");
-        Serial.print(PressureSensor_.GetRaw());
-
-        Serial.print(" | Relative = ");
-        Serial.print(PressureSensor_.GetRelative());
-
-        Serial.print(" | Force = ");
-        Serial.print(PressureSensor_.GetForce_n(), 3);
-        Serial.print(" N");
-
-        Serial.print(" | Pressure = ");
-        Serial.print(PressureSensor_.GetPressure_bar(), 4);
-        Serial.println(" bar");
-
         LCD_.Display("Pression:", String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     }
 
