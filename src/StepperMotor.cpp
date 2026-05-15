@@ -32,7 +32,7 @@ void StepperMotor::Init() {
     pinMode(DirectionPin_, OUTPUT);
     pinMode(EnablePin_, OUTPUT);
 
-    WriteCommandLevel(PulsePin_, false);
+    WriteCommand(PulsePin_, false);
     SetDirection(Direction_);
     Disable();
 }
@@ -40,14 +40,14 @@ void StepperMotor::Init() {
 //_______________________________________________________________________________________________
 
 void StepperMotor::Enable() {
-    WriteCommandLevel(EnablePin_, true);
+    WriteCommand(EnablePin_, true);
     Enabled_ = true;
 }
 
 //_______________________________________________________________________________________________
 
 void StepperMotor::Disable() {
-    WriteCommandLevel(EnablePin_, false);
+    WriteCommand(EnablePin_, false);
     Enabled_ = false;
 }
 
@@ -55,7 +55,7 @@ void StepperMotor::Disable() {
 
 void StepperMotor::SetDirection(const Direction direction) {
     Direction_ = direction;
-    WriteCommandLevel(DirectionPin_, direction == Direction::Forward);
+    WriteCommand(DirectionPin_, direction == Direction::Forward);
 }
 
 //_______________________________________________________________________________________________
@@ -77,9 +77,9 @@ void StepperMotor::Step(const uint32_t pulseWidth_us) {
         return;
     }
 
-    WriteCommandLevel(PulsePin_, true);
+    WriteCommand(PulsePin_, true);
     delayMicroseconds(pulseWidth_us);
-    WriteCommandLevel(PulsePin_, false);
+    WriteCommand(PulsePin_, false);
     delayMicroseconds(pulseWidth_us);
 }
 
@@ -93,6 +93,6 @@ void StepperMotor::Step(const uint32_t stepCount, const uint32_t pulseWidth_us) 
 
 //_______________________________________________________________________________________________
 
-void StepperMotor::WriteCommandLevel(const uint8_t pin, const bool active) const {
+void StepperMotor::WriteCommand(const uint8_t pin, const bool active) const {
     digitalWrite(pin, active ? LOW : HIGH);
 }
