@@ -33,13 +33,7 @@ const float C_SyringeDiameterMeters = 0.010f;
 //_______________________________________________________________________________________________
 
 PressureSensor::PressureSensor(const uint8_t dataPin, const uint8_t clockPin)
-    : DataPin_(dataPin),
-      ClockPin_(clockPin),
-      Offset_(0),
-      Raw_(0),
-      Relative_(0),
-      Force_n_(0.0f),
-      Pressure_bar_(0.0f) {}
+    : DataPin_(dataPin), ClockPin_(clockPin), Offset_(0), Force_n_(0.0f), Pressure_bar_(0.0f) {}
 
 //_______________________________________________________________________________________________
 
@@ -48,15 +42,17 @@ void PressureSensor::Init() {
 
     Scale_.begin(DataPin_, ClockPin_);
 
-    Serial.println("Remove force from sensor...");
+    Tare();
+}
+
+//_______________________________________________________________________________________________
+
+void PressureSensor::Tare() {
+    // Wait for the sensor to stabilize before computing the offset
     delay(C_UnloadDelay_ms);
 
     Offset_ = static_cast<int32_t>(Scale_.read_average(C_OffsetSampleCount));
-
-    Serial.print("Offset = ");
-    Serial.println(Offset_);
 }
-
 //_______________________________________________________________________________________________
 
 bool PressureSensor::Update() {
@@ -64,24 +60,13 @@ bool PressureSensor::Update() {
         return false;
     }
 
-    Raw_ = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
-    Relative_ = Raw_ - Offset_;
-    Force_n_ = static_cast<float>(Relative_) * C_ForcePerCount;
+    const int32_t raw = static_cast<int32_t>(Scale_.read_average(C_MeasurementSampleCount));
+    const int32_t relative = raw - Offset_;
+
+    Force_n_ = static_cast<float>(relative) * C_ForcePerCount;
     Pressure_bar_ = Force_n_ / ComputeAreaSquareMeters() / UnitConversions::C_PascalsPerBar;
 
     return true;
-}
-
-//_______________________________________________________________________________________________
-
-int32_t PressureSensor::GetRaw() const {
-    return Raw_;
-}
-
-//_______________________________________________________________________________________________
-
-int32_t PressureSensor::GetRelative() const {
-    return Relative_;
 }
 
 //_______________________________________________________________________________________________

@@ -29,17 +29,12 @@ class PressureSensor {
     //! \brief Initializes the sensor
     void Init();
 
+    //! \brief Performs sensor tare using the current unloaded force
+    void Tare();
+
     //! \brief Updates the sensor readings
     //! \return True if the sensor is ready and the update was successful, false otherwise
     bool Update();
-
-    //! \brief Gets the raw sensor reading
-    //! \return The raw sensor reading
-    int32_t GetRaw() const;
-
-    //! \brief Gets the relative sensor reading (raw - offset)
-    //! \return The relative sensor reading
-    int32_t GetRelative() const;
 
     //! \brief Gets the computed force in [N]
     //! \return The computed force in [N]
@@ -60,8 +55,6 @@ class PressureSensor {
 
     HX711 Scale_;         //!< The HX711 load cell amplifier instance
     int32_t Offset_;      //!< The offset value for the sensor
-    int32_t Raw_;         //!< The raw sensor reading
-    int32_t Relative_;    //!< The relative sensor reading (raw - offset)
     float Force_n_;       //!< The computed force in [N]
     float Pressure_bar_;  //!< The computed pressure in [bars]
 };
