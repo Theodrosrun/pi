@@ -18,6 +18,7 @@
 #include "InjectionControl.h"
 #include "Keypad.h"
 #include "LCD.h"
+#include "MotorMechanicsConfig.h"
 #include "PinConfig.h"
 #include "PressureSensor.h"
 #include "StepperMotor.h"
@@ -42,7 +43,8 @@ StepperMotor StepperMotor_(STEPPER_MOTOR_ENABLE_PIN,
 
 InjectionControl InjectionControl_(StepperMotor_,
                                    PressureSensor_,
-                                   C_DefaultInjectionConfig);  //!< Injection Control
+                                   C_DefaultInjectionConfig,
+                                   C_MotorMechanicsConfig);  //!< Injection Control
 }  // namespace
 
 //_______________________________________________________________________________________________
