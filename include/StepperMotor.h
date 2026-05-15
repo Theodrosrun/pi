@@ -24,9 +24,9 @@ class StepperMotor {
     enum class Direction : uint8_t { Forward, Reverse };
 
     //! \brief Constructor
-    StepperMotor(const uint8_t pulsePin,      //!< Arduino pin connected to PUL-
-                 const uint8_t directionPin,  //!< Arduino pin connected to DIR-
-                 const uint8_t enablePin      //!< Arduino pin connected to ENA-
+    StepperMotor(const uint8_t enablePin,     //!< Arduino pin connected to ENA-, active high
+                 const uint8_t directionPin,  //!< Arduino pin connected to DIR-, level signal
+                 const uint8_t pulsePin       //!< Arduino pin connected to PUL-, active low
     );
 
     //! \brief Initializes the pins
@@ -60,9 +60,9 @@ class StepperMotor {
     void Steps(const uint32_t stepCount, const uint32_t pulseWidth_us);
 
    private:
-    const uint8_t PulsePin_;      //!< Arduino pin connected to PUL-
-    const uint8_t DirectionPin_;  //!< Arduino pin connected to DIR-
-    const uint8_t EnablePin_;     //!< Arduino pin connected to ENA-
+    const uint8_t EnablePin_;     //!< Arduino pin connected to ENA-, active high
+    const uint8_t DirectionPin_;  //!< Arduino pin connected to DIR-, level signal
+    const uint8_t PulsePin_;      //!< Arduino pin connected to PUL-, active low
     Direction Direction_;         //!< Current direction command
     bool Enabled_;                //!< Current enable state
 };

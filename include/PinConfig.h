@@ -33,6 +33,6 @@
 // Pin definitions for stepper motor driver
 #define STEPPER_MOTOR_PULSE_PIN 2
 #define STEPPER_MOTOR_DIRECTION_PIN 3
-#define STEPPER_MOTOR_ENABLE_PIN 10
+#define STEPPER_MOTOR_ENABLE_PIN 11
 
 #endif  // PINCONFIG_H

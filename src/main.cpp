@@ -34,9 +34,9 @@ LCD LCD_(LCD_RS_PIN,
          LCD_DATA6_PIN,
          LCD_DATA7_PIN);                                          //!< LCD
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure Sensor
-StepperMotor StepperMotor_(STEPPER_MOTOR_PULSE_PIN,
+StepperMotor StepperMotor_(STEPPER_MOTOR_ENABLE_PIN,
                            STEPPER_MOTOR_DIRECTION_PIN,
-                           STEPPER_MOTOR_ENABLE_PIN);  //!< Stepper Motor
+                           STEPPER_MOTOR_PULSE_PIN);  //!< Stepper Motor
 }  // namespace
 
 //_______________________________________________________________________________________________

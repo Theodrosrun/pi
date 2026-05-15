@@ -16,38 +16,41 @@
 
 #include <Arduino.h>
 
-StepperMotor::StepperMotor(const uint8_t pulsePin,
+StepperMotor::StepperMotor(const uint8_t enablePin,
                            const uint8_t directionPin,
-                           const uint8_t enablePin)
-    : PulsePin_(pulsePin),
+                           const uint8_t pulsePin)
+    : EnablePin_(enablePin),
       DirectionPin_(directionPin),
-      EnablePin_(enablePin),
+      PulsePin_(pulsePin),
       Direction_(Direction::Forward),
       Enabled_(false) {}
 
 //_______________________________________________________________________________________________
 
 void StepperMotor::Init() {
-    pinMode(PulsePin_, OUTPUT);
-    pinMode(DirectionPin_, OUTPUT);
     pinMode(EnablePin_, OUTPUT);
+    pinMode(DirectionPin_, OUTPUT);
+    pinMode(PulsePin_, OUTPUT);
 
-    digitalWrite(PulsePin_, HIGH);
-    SetDirection(Direction_);
+    // ENA enables the driver when HIGH and disables it when LOW in this setup.
     Disable();
+    // DIR is a level signal: LOW and HIGH select opposite directions.
+    SetDirection(Direction_);
+    // PUL is active-low: LOW generates a step pulse, HIGH is idle.
+    digitalWrite(PulsePin_, HIGH);
 }
 
 //_______________________________________________________________________________________________
 
 void StepperMotor::Enable() {
-    digitalWrite(EnablePin_, LOW);
+    digitalWrite(EnablePin_, HIGH);
     Enabled_ = true;
 }
 
 //_______________________________________________________________________________________________
 
 void StepperMotor::Disable() {
-    digitalWrite(EnablePin_, HIGH);
+    digitalWrite(EnablePin_, LOW);
     Enabled_ = false;
 }
 
@@ -79,10 +82,13 @@ void StepperMotor::Step(const uint32_t pulseWidth_us) {
 
     // Start the active-low pulse
     digitalWrite(PulsePin_, LOW);
+
     // Keep the pulse active long enough for the driver
     delayMicroseconds(pulseWidth_us);
+
     // End the pulse and return to idle state
     digitalWrite(PulsePin_, HIGH);
+
     // Wait before sending the next pulse
     delayMicroseconds(pulseWidth_us);
 }
