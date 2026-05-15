@@ -38,6 +38,10 @@ class StepperMotor {
     //! \brief Disables the motor
     void Disable();
 
+    //! \brief Indicates whether the motor is enabled
+    //! \return True if the motor is enabled, false otherwise
+    bool IsEnabled() const;
+
     //! \brief Sets the motor rotation direction
     //! \param direction Direction command to apply
     void SetDirection(const Direction direction);
@@ -45,10 +49,6 @@ class StepperMotor {
     //! \brief Gets the configured direction
     //! \return Current direction command
     Direction GetDirection() const;
-
-    //! \brief Indicates whether the motor is enabled
-    //! \return True if the motor is enabled, false otherwise
-    bool IsEnabled() const;
 
     //! \brief Generates one step pulse
     //! \param pulseWidth_us Pulse active duration in microseconds

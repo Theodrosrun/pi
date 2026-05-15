@@ -53,6 +53,12 @@ void StepperMotor::Disable() {
 
 //_______________________________________________________________________________________________
 
+bool StepperMotor::IsEnabled() const {
+    return Enabled_;
+}
+
+//_______________________________________________________________________________________________
+
 void StepperMotor::SetDirection(const Direction direction) {
     Direction_ = direction;
     digitalWrite(DirectionPin_, ((direction == Direction::Forward) ? LOW : HIGH));
@@ -62,12 +68,6 @@ void StepperMotor::SetDirection(const Direction direction) {
 
 StepperMotor::Direction StepperMotor::GetDirection() const {
     return Direction_;
-}
-
-//_______________________________________________________________________________________________
-
-bool StepperMotor::IsEnabled() const {
-    return Enabled_;
 }
 
 //_______________________________________________________________________________________________
