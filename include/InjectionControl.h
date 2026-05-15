@@ -60,6 +60,10 @@ class InjectionControl {
     //! \param targetPulseWidth_us Target pulse width in microseconds for the current step
     void UpdateRamp(const uint32_t targetPulseWidth_us);
 
+    //! \brief Indicates whether pressure should be checked at the current step
+    //! \return True when the configured check period is reached
+    bool PressureShouldBeChecked() const;
+
     //! \brief Computes the pulse width for the current step based on the motion profile
     uint32_t ComputePulseWidth_us() const;
 

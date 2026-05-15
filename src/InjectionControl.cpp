@@ -61,22 +61,19 @@ InjectionControl::StopReason InjectionControl::Run() {
         UpdateRamp(TargetPulseWidth_us_);
 
         // Check pressure at defined intervals
-        if ((InjectionConfig_.PressureCheckPeriodSteps != 0u) &&
-            ((StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u)) {
-            if (PressureSensor_.Update()) {
-                LastPressure_bar_ = PressureSensor_.GetPressure_bar();
+        if (PressureShouldBeChecked() && PressureSensor_.Update()) {
+            LastPressure_bar_ = PressureSensor_.GetPressure_bar();
 
-                // Check if safety pressure is reached
-                if (LastPressure_bar_ >= InjectionConfig_.SafetyPressure_bar) {
-                    StopReason_ = StopReason::SafetyPressureReached;
-                    break;
-                }
+            // Check if safety pressure is reached
+            if (LastPressure_bar_ >= InjectionConfig_.SafetyPressure_bar) {
+                StopReason_ = StopReason::SafetyPressureReached;
+                break;
+            }
 
-                // Check if target pressure is reached
-                if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
-                    StopReason_ = StopReason::TargetPressureReached;
-                    break;
-                }
+            // Check if target pressure is reached
+            if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
+                StopReason_ = StopReason::TargetPressureReached;
+                break;
             }
         }
     }
@@ -122,6 +119,13 @@ void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
     } else {
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
+}
+
+//_______________________________________________________________________________________________
+
+bool InjectionControl::PressureShouldBeChecked() const {
+    return (InjectionConfig_.PressureCheckPeriodSteps != 0u) &&
+           ((StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u);
 }
 
 //_______________________________________________________________________________________________
