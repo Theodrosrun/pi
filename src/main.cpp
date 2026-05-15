@@ -26,7 +26,7 @@
 namespace {
 // Configuration constants
 const uint32_t C_SerialBaudRate = 9600u;  //!< Serial baud rate
-const uint32_t C_LoopDelay_ms = 300u;     //!< Loop delay in milliseconds
+const uint32_t C_LoopDelay_ms = 10u;      //!< Loop delay in milliseconds
 
 // Peripheral instances
 Keypad Keypad_(KEYPAD_PIN);  //!< Keypad
@@ -145,9 +145,13 @@ void loop() {
 
             StepperMotor_.Enable();
             StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
-            StepperMotor_.Steps(1600u, 500u);
-            StepperMotor_.Disable();
 
+            while (Keypad_.GetPressedButton() == Keypad::Button::Up) {
+                StepperMotor_.Step(500u);
+                Keypad_.Update();
+            }
+
+            StepperMotor_.Disable();
             break;
         }
 
@@ -156,9 +160,13 @@ void loop() {
 
             StepperMotor_.Enable();
             StepperMotor_.SetDirection(StepperMotor::Direction::Reverse);
-            StepperMotor_.Steps(1600u, 500u);
-            StepperMotor_.Disable();
 
+            while (Keypad_.GetPressedButton() == Keypad::Button::Down) {
+                StepperMotor_.Step(500u);
+                Keypad_.Update();
+            }
+
+            StepperMotor_.Disable();
             break;
         }
 
