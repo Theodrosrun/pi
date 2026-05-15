@@ -14,6 +14,8 @@
 
 #include <Arduino.h>
 
+#include "InjectionConfig.h"
+#include "InjectionControl.h"
 #include "Keypad.h"
 #include "LCD.h"
 #include "PinConfig.h"
@@ -37,6 +39,10 @@ PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure 
 StepperMotor StepperMotor_(STEPPER_MOTOR_ENABLE_PIN,
                            STEPPER_MOTOR_DIRECTION_PIN,
                            STEPPER_MOTOR_PULSE_PIN);  //!< Stepper Motor
+
+InjectionControl InjectionControl_(StepperMotor_,
+                                   PressureSensor_,
+                                   C_DefaultInjectionConfig);  //!< Injection Control
 }  // namespace
 
 //_______________________________________________________________________________________________
@@ -58,22 +64,30 @@ void setup() {
 void loop() {
     Keypad_.Update();
 
-    if (Keypad_.GetPressedButton() == Keypad::Button::Left) {
-        LCD_.Display("Injection", "in progress...");
-        StepperMotor_.Enable();
-        StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
-        StepperMotor_.Steps(1600u, 1000u);
-        StepperMotor_.Disable();
-        LCD_.Display("Injection", "completed");
-    }
-
     if (Keypad_.GetPressedButton() == Keypad::Button::Right) {
         LCD_.Display("Injection", "in progress...");
-        StepperMotor_.Enable();
-        StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
-        StepperMotor_.Steps(1600u, 1000u);
-        StepperMotor_.Disable();
-        LCD_.Display("Injection", "completed");
+
+        const InjectionControl::StopReason stopReason = InjectionControl_.Run();
+
+        switch (stopReason) {
+            case InjectionControl::StopReason::TargetPressureReached:
+                LCD_.Display("Target reached",
+                             String(InjectionControl_.GetLastPressure_bar(), 2) + " bar");
+                break;
+
+            case InjectionControl::StopReason::SafetyPressureReached:
+                LCD_.Display("Safety stop",
+                             String(InjectionControl_.GetLastPressure_bar(), 2) + " bar");
+                break;
+
+            case InjectionControl::StopReason::MaximumStepsReached:
+                LCD_.Display("Safety stop", "Max steps");
+                break;
+
+            default:
+                LCD_.Display("Injection", "stopped");
+                break;
+        }
     }
 
     if (PressureSensor_.Update()) {
