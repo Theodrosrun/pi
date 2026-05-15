@@ -34,7 +34,7 @@ LCD LCD_(LCD_RS_PIN,
          LCD_DATA6_PIN,
          LCD_DATA7_PIN);                                          //!< LCD
 PressureSensor PressureSensor_(HX711_DATA_PIN, HX711_CLOCK_PIN);  //!< Pressure Sensor
-StepperMotor StepperMotor_(STEPPER_STEP_PIN,
+StepperMotor StepperMotor_(STEPPER_PULSE_PIN,
                            STEPPER_DIRECTION_PIN,
                            STEPPER_ENABLE_PIN);  //!< Stepper Motor
 }  // namespace
@@ -50,8 +50,7 @@ void setup() {
     LCD_.Display("LCD Keypad", "Ready");
 
     StepperMotor_.Init();
-    StepperMotor_.Enable();
-    StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
+    StepperMotor_.Disable();
 }
 
 //_______________________________________________________________________________________________
@@ -61,6 +60,13 @@ void loop() {
 
     Serial.print("Button = ");
     Serial.println(Keypad_.GetPressedButtonName());
+
+    if (Keypad_.GetPressedButton() == Keypad::Button::Right) {
+        StepperMotor_.Enable();
+        StepperMotor_.SetDirection(StepperMotor::Direction::Forward);
+        StepperMotor_.Step(20u, 1000u);
+        StepperMotor_.Disable();
+    }
 
     if (PressureSensor_.Update()) {
         Serial.print("Raw = ");
@@ -79,8 +85,6 @@ void loop() {
 
         LCD_.Display("Pression:", String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     }
-
-    StepperMotor_.Step(200u, 1000u);
 
     delay(C_LoopDelay_ms);
 }

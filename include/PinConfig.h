@@ -31,7 +31,7 @@
 #define KEYPAD_PIN A0
 
 // Pin definitions for stepper motor driver
-#define STEPPER_STEP_PIN 2
+#define STEPPER_PULSE_PIN 2
 #define STEPPER_DIRECTION_PIN 3
 #define STEPPER_ENABLE_PIN 10
 
