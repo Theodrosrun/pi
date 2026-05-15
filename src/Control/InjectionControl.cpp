@@ -43,7 +43,7 @@ InjectionControl::InjectionControl(StepperMotor& stepperMotor,
 
 //_______________________________________________________________________________________________
 
-InjectionControl::StopReason InjectionControl::Run() {
+InjectionControl::StopReason InjectionControl::Execute() {
     // Reset state
     StepCount_ = 0u;
     LastPressure_bar_ = 0.0f;

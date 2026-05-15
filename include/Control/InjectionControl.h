@@ -42,9 +42,9 @@ class InjectionControl {
         const MotorMotionConfig& motorMotionConfig         //!< Motor motion profile configuration
     );
 
-    //! \brief Runs one complete injection sequence
+    //! \brief Executes one complete injection sequence
     //! \return Stop reason at the end of the injection
-    StopReason Run();
+    StopReason Execute();
 
     //! \brief Gets the last stop reason
     //! \return Last stop reason

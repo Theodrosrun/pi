@@ -83,7 +83,7 @@ void loop() {
         case Keypad::Button::Left: {
             LCD_.Display("Left coronary", "in progress...");
 
-            const InjectionControl::StopReason stopReason = LeftCoronaryInjectionControl_.Run();
+            const InjectionControl::StopReason stopReason = LeftCoronaryInjectionControl_.Execute();
 
             switch (stopReason) {
                 case InjectionControl::StopReason::TargetPressureReached:
@@ -113,7 +113,8 @@ void loop() {
         case Keypad::Button::Right: {
             LCD_.Display("Right coronary", "in progress...");
 
-            const InjectionControl::StopReason stopReason = RightCoronaryInjectionControl_.Run();
+            const InjectionControl::StopReason stopReason =
+                RightCoronaryInjectionControl_.Execute();
 
             switch (stopReason) {
                 case InjectionControl::StopReason::TargetPressureReached:
