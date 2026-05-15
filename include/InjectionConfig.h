@@ -30,11 +30,6 @@ struct InjectionConfig {
     float SyringeStroke_mm;
     float TargetFlow_ml_s;
 
-    // Motor / mechanics parameters
-    float ScrewLead_mm_per_rev;
-    uint32_t MotorFullSteps_per_rev;
-    uint32_t Microsteps;
-
     // Safety
     uint32_t MaximumSteps;
 
@@ -54,10 +49,6 @@ constexpr InjectionConfig C_DefaultInjectionConfig = {
     .SyringeVolume_ml = 30.0f,
     .SyringeStroke_mm = 100.0f,
     .TargetFlow_ml_s = 6.0f,
-
-    .ScrewLead_mm_per_rev = 5.0f,
-    .MotorFullSteps_per_rev = 200u,
-    .Microsteps = 4u,
 
     .MaximumSteps = 20000u,
 

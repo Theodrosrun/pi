@@ -18,14 +18,18 @@
 
 InjectionControl::InjectionControl(StepperMotor& stepperMotor,
                                    PressureSensor& pressureSensor,
-                                   const InjectionConfig& config)
+                                   const InjectionConfig& injectionConfig,
+                                   const MotorMechanicsConfig& motorMechanicsConfig)
     : StepperMotor_(stepperMotor),
       PressureSensor_(pressureSensor),
-      Config_(config),
+      InjectionConfig_(injectionConfig),
+      MotorMechanicsConfig_(motorMechanicsConfig),
       StopReason_(StopReason::None),
       LastPressure_bar_(0.0f),
       StepCount_(0u),
-      CurrentPulseWidth_us_(config.StartPulseWidth_us),
+      CurrentPulseWidth_us_(InjectionConfig_.StartPulseWidth_us),
+      TargetPulseWidth_us_(ComputePulseWidth_us()),
+      MaximumSteps_(ComputeMaximumSteps()),
       Running_(false) {}
 
 //_______________________________________________________________________________________________
@@ -34,19 +38,14 @@ InjectionControl::StopReason InjectionControl::Run() {
     StopReason_ = StopReason::None;
     LastPressure_bar_ = 0.0f;
     StepCount_ = 0u;
-    CurrentPulseWidth_us_ = Config_.StartPulseWidth_us;
+    CurrentPulseWidth_us_ = InjectionConfig_.StartPulseWidth_us;
     Running_ = true;
 
-    const uint32_t targetPulseWidth_us = ComputePulseWidth_us();
-
-    const uint32_t syringeMaximumSteps = ComputeMaximumSteps();
-    const uint32_t maximumSteps = min(syringeMaximumSteps, Config_.MaximumSteps);
-
     StepperMotor_.Enable();
-    StepperMotor_.SetDirection(Config_.Direction);
+    StepperMotor_.SetDirection(InjectionConfig_.Direction);
 
     while (Running_) {
-        if (StepCount_ >= maximumSteps) {
+        if (StepCount_ >= MaximumSteps_) {
             StopReason_ = StopReason::MaximumStepsReached;
             break;
         }
@@ -54,19 +53,19 @@ InjectionControl::StopReason InjectionControl::Run() {
         StepperMotor_.Step(CurrentPulseWidth_us_);
         ++StepCount_;
 
-        UpdateRamp(targetPulseWidth_us);
+        UpdateRamp(TargetPulseWidth_us_);
 
-        if (Config_.PressureCheckPeriodSteps != 0u &&
-            (StepCount_ % Config_.PressureCheckPeriodSteps) == 0u) {
+        if (InjectionConfig_.PressureCheckPeriodSteps != 0u &&
+            (StepCount_ % InjectionConfig_.PressureCheckPeriodSteps) == 0u) {
             if (PressureSensor_.Update()) {
                 LastPressure_bar_ = PressureSensor_.GetPressure_bar();
 
-                if (LastPressure_bar_ >= Config_.SafetyPressure_bar) {
+                if (LastPressure_bar_ >= InjectionConfig_.SafetyPressure_bar) {
                     StopReason_ = StopReason::SafetyPressureReached;
                     break;
                 }
 
-                if (LastPressure_bar_ >= Config_.TargetPressure_bar) {
+                if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
                     StopReason_ = StopReason::TargetPressureReached;
                     break;
                 }
@@ -108,16 +107,16 @@ uint32_t InjectionControl::GetStepCount() const {
 //_______________________________________________________________________________________________
 
 void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
-    if (Config_.AccelerationPeriodSteps == 0u) {
+    if (InjectionConfig_.AccelerationPeriodSteps == 0u) {
         return;
     }
 
-    if ((StepCount_ % Config_.AccelerationPeriodSteps) != 0u) {
+    if ((StepCount_ % InjectionConfig_.AccelerationPeriodSteps) != 0u) {
         return;
     }
 
-    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + Config_.AccelerationStep_us)) {
-        CurrentPulseWidth_us_ -= Config_.AccelerationStep_us;
+    if (CurrentPulseWidth_us_ > (targetPulseWidth_us + InjectionConfig_.AccelerationStep_us)) {
+        CurrentPulseWidth_us_ -= InjectionConfig_.AccelerationStep_us;
     } else {
         CurrentPulseWidth_us_ = targetPulseWidth_us;
     }
@@ -126,13 +125,13 @@ void InjectionControl::UpdateRamp(const uint32_t targetPulseWidth_us) {
 //_______________________________________________________________________________________________
 
 uint32_t InjectionControl::ComputePulseWidth_us() const {
-    const float ml_per_mm = Config_.SyringeVolume_ml / Config_.SyringeStroke_mm;
-    const float targetSpeed_mm_s = Config_.TargetFlow_ml_s / ml_per_mm;
+    const float ml_per_mm = InjectionConfig_.SyringeVolume_ml / InjectionConfig_.SyringeStroke_mm;
+    const float targetSpeed_mm_s = InjectionConfig_.TargetFlow_ml_s / ml_per_mm;
 
-    const float pulses_per_rev =
-        static_cast<float>(Config_.MotorFullSteps_per_rev * Config_.Microsteps);
+    const float pulses_per_rev = static_cast<float>(MotorMechanicsConfig_.MotorFullSteps_per_rev *
+                                                    MotorMechanicsConfig_.Microsteps);
 
-    const float pulses_per_mm = pulses_per_rev / Config_.ScrewLead_mm_per_rev;
+    const float pulses_per_mm = pulses_per_rev / MotorMechanicsConfig_.ScrewLead_mm_per_rev;
     const float pulses_per_s = targetSpeed_mm_s * pulses_per_mm;
 
     const float pulseWidth_us = 1000000.0f / (2.0f * pulses_per_s);
@@ -143,11 +142,11 @@ uint32_t InjectionControl::ComputePulseWidth_us() const {
 //_______________________________________________________________________________________________
 
 uint32_t InjectionControl::ComputeMaximumSteps() const {
-    const float pulses_per_rev =
-        static_cast<float>(Config_.MotorFullSteps_per_rev * Config_.Microsteps);
+    const float pulses_per_rev = static_cast<float>(MotorMechanicsConfig_.MotorFullSteps_per_rev *
+                                                    MotorMechanicsConfig_.Microsteps);
 
-    const float pulses_per_mm = pulses_per_rev / Config_.ScrewLead_mm_per_rev;
-    const float maximumSteps = Config_.SyringeStroke_mm * pulses_per_mm;
+    const float pulses_per_mm = pulses_per_rev / MotorMechanicsConfig_.ScrewLead_mm_per_rev;
+    const float maximumSteps = InjectionConfig_.SyringeStroke_mm * pulses_per_mm;
 
     return static_cast<uint32_t>(maximumSteps);
 }
