@@ -22,8 +22,8 @@ StepperMotor::StepperMotor(const uint8_t enablePin,
     : EnablePin_(enablePin),
       DirectionPin_(directionPin),
       PulsePin_(pulsePin),
-      Direction_(Direction::Forward),
-      Enabled_(false) {}
+      Enabled_(false),
+      Direction_(Direction::Forward) {}
 
 //_______________________________________________________________________________________________
 

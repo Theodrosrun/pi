@@ -46,7 +46,8 @@ class Keypad {
 
    private:
     const uint8_t ButtonPin_;  //!< Button analog input pin
-    Button ButtonPressed_;     //!< Last decoded button
+
+    Button ButtonPressed_;  //!< Last decoded button
 };
 
 #endif  // KEYPAD_H

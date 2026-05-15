@@ -55,14 +55,15 @@ class PressureSensor {
     float ComputeAreaSquareMeters() const;
 
    private:
-    HX711 Scale_;             //!< The HX711 load cell amplifier instance
     const uint8_t DataPin_;   //!< The data pin connected to the HX711
     const uint8_t ClockPin_;  //!< The clock pin connected to the HX711
-    int32_t Offset_;          //!< The offset value for the sensor
-    int32_t Raw_;             //!< The raw sensor reading
-    int32_t Relative_;        //!< The relative sensor reading (raw - offset)
-    float Force_n_;           //!< The computed force in [N]
-    float Pressure_bar_;      //!< The computed pressure in [bars]
+
+    HX711 Scale_;         //!< The HX711 load cell amplifier instance
+    int32_t Offset_;      //!< The offset value for the sensor
+    int32_t Raw_;         //!< The raw sensor reading
+    int32_t Relative_;    //!< The relative sensor reading (raw - offset)
+    float Force_n_;       //!< The computed force in [N]
+    float Pressure_bar_;  //!< The computed pressure in [bars]
 };
 
 #endif  // PRESSURESENSOR_H

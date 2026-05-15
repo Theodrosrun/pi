@@ -63,8 +63,9 @@ class StepperMotor {
     const uint8_t EnablePin_;     //!< Arduino pin connected to ENA-, active high
     const uint8_t DirectionPin_;  //!< Arduino pin connected to DIR-, level signal
     const uint8_t PulsePin_;      //!< Arduino pin connected to PUL-, active low
-    Direction Direction_;         //!< Current direction command
-    bool Enabled_;                //!< Current enable state
+
+    bool Enabled_;         //!< Current enable state
+    Direction Direction_;  //!< Current direction command
 };
 
 #endif  // STEPPERMOTOR_H
