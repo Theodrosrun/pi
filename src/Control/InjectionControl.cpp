@@ -80,7 +80,6 @@ InjectionControl::State InjectionControl::Execute() {
             // Check if target pressure is reached
             if (LastPressure_bar_ >= InjectionConfig_.TargetPressure_bar) {
                 State_ = State::TargetPressureReached;
-                break;
             }
         }
     }
