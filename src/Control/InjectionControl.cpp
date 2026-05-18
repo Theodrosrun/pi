@@ -68,7 +68,7 @@ InjectionControl::State InjectionControl::Execute() {
 
         // Check pressure at defined intervals
         if (PressureShouldBeChecked() &&
-            PressureSensor_.Update(InjectionConfig_.SyringeDiameter_mm)) {
+            PressureSensor_.TryUpdatePressure(InjectionConfig_.SyringeDiameter_mm)) {
             LastPressure_bar_ = PressureSensor_.GetPressure_bar();
 
             // Check if safety pressure is reached

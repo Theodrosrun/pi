@@ -69,7 +69,7 @@ void PressureSensor::Tare() {
 }
 //_______________________________________________________________________________________________
 
-bool PressureSensor::Update(const float syringeDiameter_mm) {
+bool PressureSensor::TryUpdatePressure(const float syringeDiameter_mm) {
     if (!Scale_.is_ready()) {
         return false;
     }

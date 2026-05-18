@@ -32,10 +32,10 @@ class PressureSensor {
     //! \brief Performs sensor tare using the current unloaded force
     void Tare();
 
-    //! \brief Updates the sensor readings
+    //! \brief Updates the measured force and pressure if the sensor is ready
     //! \param syringeDiameter_mm Syringe inner diameter in millimeters
     //! \return True if the sensor is ready and the update was successful, false otherwise
-    bool Update(const float syringeDiameter_mm);
+    bool TryUpdatePressure(const float syringeDiameter_mm);
 
     //! \brief Gets the computed force in [N]
     //! \return The computed force in [N]
