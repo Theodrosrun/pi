@@ -31,15 +31,15 @@ struct InjectionConfig {
 constexpr InjectionConfig C_LeftCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                            .SafetyPressure_bar = 2.0f,
                                                            .TargetFlow_ml_s = 6.0f,
-                                                           .SyringeVolume_ml = 30.0f,
-                                                           .SyringeStroke_mm = 100.0f,
-                                                           .SyringeDiameter_mm = 10.0f};
+                                                           .SyringeVolume_ml = 20.0f,
+                                                           .SyringeStroke_mm = 63.0f,
+                                                           .SyringeDiameter_mm = 25.0f};
 
 //! \brief Right coronary injection configuration
 constexpr InjectionConfig C_RightCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                             .SafetyPressure_bar = 2.0f,
                                                             .TargetFlow_ml_s = 3.0f,
-                                                            .SyringeVolume_ml = 30.0f,
-                                                            .SyringeStroke_mm = 100.0f,
-                                                            .SyringeDiameter_mm = 10.0f};
+                                                            .SyringeVolume_ml = 20.0f,
+                                                            .SyringeStroke_mm = 63.0f,
+                                                            .SyringeDiameter_mm = 25.0f};
 #endif  // INJECTIONCONFIG_H
