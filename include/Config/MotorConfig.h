@@ -38,7 +38,7 @@ constexpr MotorMechanicsConfig C_MotorMechanicsConfig = {.ScrewLead_mm_per_rev =
 
 //! \brief Default motor motion profile configuration
 constexpr MotorMotionConfig C_MotorMotionConfig = {.StartPulseWidth_us = 800u,
-                                                   .AccelerationStep_us = 1u,
+                                                   .AccelerationStep_us = 10u,
                                                    .AccelerationPeriodSteps = 5u};
 
 #endif  // MOTORMECHANICSCONFIG_H
