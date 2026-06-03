@@ -62,7 +62,7 @@ InjectionControl RightCoronaryInjectionControl_(
 
 // Helper functions
 void ExecuteInjection(InjectionControl& injectionControl, const char* line) {
-    LCD_.Display(line, "in progress...");
+    LCD_.Display(line, String(PressureSensor_.GetPressure_bar(), 3) + " bar");
     injectionControl.Execute();
 }
 
