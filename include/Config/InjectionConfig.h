@@ -27,7 +27,8 @@ struct InjectionConfig {
     float SyringeDiameter_mm;  //!< Syringe inner diameter in millimeters
 };
 
-//! \brief Left coronary injection configuration
+//! \brief Left coronary injection configuration, only for testing, to be adjusted based on actual
+//! requirements
 constexpr InjectionConfig C_LeftCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                            .SafetyPressure_bar = 36.0f,
                                                            .TargetFlow_ml_s = 16.0f,
@@ -35,7 +36,8 @@ constexpr InjectionConfig C_LeftCoronaryInjectionConfig = {.TargetPressure_bar =
                                                            .SyringeStroke_mm = 63.0f,
                                                            .SyringeDiameter_mm = 25.0f};
 
-//! \brief Right coronary injection configuration
+//! \brief Right coronary injection configuration, only for testing, to be adjusted based on actual
+//! requirements
 constexpr InjectionConfig C_RightCoronaryInjectionConfig = {.TargetPressure_bar = 2.0f,
                                                             .SafetyPressure_bar = 36.0f,
                                                             .TargetFlow_ml_s = 16.0f,
